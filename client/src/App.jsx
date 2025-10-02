@@ -1,21 +1,13 @@
-// src/App.jsx
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-// 나중에 회원가입 페이지도 import 하면 됨
-// import RegisterPage from "./pages/register/RegisterPage";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoginPage from "./pages/login/LoginPage";
+import RegisterPage from "./pages/login/RegistrationPage";  // 새로 만든 회원가입 페이지 import
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* 기본 경로("/")에 들어오면 /login으로 리다이렉트 */}
-        <Route path="/" element={<Navigate to="/login" />} />
-
-        {/* 로그인 페이지 */}
-        <Route path="/login" element={<LoginPage />} />
-
-        {/* 회원가입 페이지 (나중에 추가) */}
-        {/* <Route path="/register" element={<RegisterPage />} /> */}
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />  {/* 회원가입 경로 추가 */}
       </Routes>
     </Router>
   );
