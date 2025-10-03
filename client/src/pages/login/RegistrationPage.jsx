@@ -3,6 +3,8 @@ import styled, { createGlobalStyle } from "styled-components";
 import eyeOpen from "../../assets/eyeOpen.png";
 import eyeClosed from "../../assets/eyeClosed.png";
 import backArrow from "../../assets/backArrow.png";
+import { useNavigate } from "react-router-dom";
+import { register } from "../../api/auth";   
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -20,7 +22,6 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-// 전체 배경 Wrapper
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -29,7 +30,6 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-// 카드형 컨테이너 (모바일에서는 꽉 차고, 데스크탑은 500px 제한)
 const Container = styled.div`
   width: 100%;
   max-width: 500px;
@@ -38,7 +38,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;   /* ✅ 세로 가운데 정렬 */
 `;
+
 
 const Header = styled.header`
   width: 100%;
@@ -99,10 +101,6 @@ const Input = styled.input`
   font-size: 14px;
   background: #fff;
 
-  &.verification-code {
-    padding-right: 120px;
-  }
-
   &::placeholder {
     color: #D8D8D8;
   }
@@ -125,22 +123,6 @@ const EyeIcon = styled.img`
   cursor: pointer;
 `;
 
-const CodeButton = styled.button`
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 30px;
-  padding: 0 12px;
-  background: #0C7C51;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 12px;
-  cursor: pointer;
-  font-weight: bold;
-`;
-
 const SubmitButton = styled.button`
   width: 100%;
   height: 50px;
@@ -157,19 +139,32 @@ const SubmitButton = styled.button`
 export default function RegisterPage() {
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
   const [secret, setSecret] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const isFormValid =
-    nickname.trim() && email.trim() && code.trim() && password.trim() && secret.trim();
+    nickname.trim() && email.trim() && password.trim() && secret.trim();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isFormValid) return;
-    console.log("Registration Data:", { nickname, email, code, password, secret });
-    alert("회원가입 요청이 전송되었습니다.");
+
+    const result = await register({
+      email,
+      password,
+      nickname,
+      secretWord: secret,
+    });
+
+    console.log(" 서버로부터 받은 응답:", result);
+    if (result.ok) {
+      alert(result.data.message);   // "가입 성공! 이메일을 확인하여 계정을 활성화해주세요."
+      navigate("/");                // ✅ 로그인 페이지로 이동
+    } else {
+      alert(result.message);        // "이미 사용 중인 이메일…" 등 서버 메시지
+    }
   };
 
   return (
@@ -210,21 +205,6 @@ export default function RegisterPage() {
                 <br />
                 (ewhain.net 혹은 ewha.ac.kr)
               </HelperText>
-            </InputGroup>
-
-            <InputGroup>
-              <InputWrapper>
-                <Input
-                  className="verification-code"
-                  placeholder="인증번호"
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                />
-                <CodeButton type="button" onClick={() => alert("인증번호가 발송되었습니다.")}>
-                  인증번호 발송
-                </CodeButton>
-              </InputWrapper>
-              <HelperText>* 이메일로 발송된 인증번호를 입력해 주세요.</HelperText>
             </InputGroup>
 
             <InputGroup>

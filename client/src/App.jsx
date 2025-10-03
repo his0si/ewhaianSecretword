@@ -8,6 +8,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />  {/* 회원가입 경로 추가 */}
+        
       </Routes>
     </Router>
   );

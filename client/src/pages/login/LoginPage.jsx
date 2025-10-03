@@ -7,6 +7,7 @@ import eyeClosed from "../../assets/eyeClosed.png";
 import checkGray from "../../assets/checkGray.png";
 import checkGreen from "../../assets/checkGreen.png";
 
+import { login } from "../../api/auth";
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
@@ -156,6 +157,13 @@ const RegisterButton = styled.button`
     background: #c5d9d1;
   }
 `;
+const ErrorMessage = styled.p`
+  color: #e01e5a; /* 눈에 띄는 빨간색 계열 */
+  font-size: 13px;
+  margin: 0 0 10px; /* 위아래 간격 조정 */
+  width: 100%;
+  text-align: center;
+`;
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -163,6 +171,7 @@ export default function LoginPage() {
   const [remember, setRemember] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoginButtonActive, setIsLoginButtonActive] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -179,15 +188,35 @@ export default function LoginPage() {
     setIsLoginButtonActive(email.trim() !== "" && password.trim() !== "");
   }, [email, password]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!isLoginButtonActive) {
-      alert("이메일과 비밀번호를 모두 입력해주세요.");
-      return;
+  // LoginPage.jsx
+
+// ✅ 이 함수로 기존 handleSubmit 함수를 완전히 대체하세요.
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError(""); // 이전 에러 메시지 초기화
+
+  // isLoginButtonActive 체크는 그대로 두어도 좋습니다. (엔터 키 입력 방어)
+  if (!isLoginButtonActive) {
+    return;
+  }
+
+  try {
+    // 1. 백엔드에 로그인 요청 보내기 (console.log 대신)
+    const result = await login({ email, password });
+
+    // 2. 결과에 따라 분기 처리
+    if (result.ok) {
+      // 성공 시 퀴즈 페이지로 이동
+      navigate("/quiz");
+    } else {
+      // 실패 시 에러 메시지 state에 저장
+      setError(result.message);
     }
-    console.log("로그인 데이터:", { email, password, remember });
-    // navigate("/main");
-  };
+  } catch (err) {
+    // 네트워크 오류 등 통신 자체에 실패한 경우
+    setError("서버와 통신 중 문제가 발생했습니다.");
+  }
+};
 
   return (
     <>
@@ -232,6 +261,7 @@ export default function LoginPage() {
               <RememberIcon src={remember ? checkGreen : checkGray} alt="체크" />
               <span>로그인 유지</span>
             </RememberWrapper>
+            {error && <ErrorMessage>{error}</ErrorMessage>}
 
             <LoginButton type="submit" disabled={!isLoginButtonActive}>
               로그인
