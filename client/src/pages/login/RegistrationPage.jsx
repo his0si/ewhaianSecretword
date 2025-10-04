@@ -18,7 +18,7 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: #EFF4F2;   /* ✨ 전체 배경색 */
+    background: #EFF4F2;   
   }
 `;
 
@@ -38,7 +38,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;   /* ✅ 세로 가운데 정렬 */
+  justify-content: center;   
 `;
 
 
@@ -160,10 +160,10 @@ export default function RegisterPage() {
 
     console.log(" 서버로부터 받은 응답:", result);
     if (result.ok) {
-      alert(result.data.message);   // "가입 성공! 이메일을 확인하여 계정을 활성화해주세요."
-      navigate("/");                // ✅ 로그인 페이지로 이동
+      alert(result.data.message);  
+      navigate("/");                
     } else {
-      alert(result.message);        // "이미 사용 중인 이메일…" 등 서버 메시지
+      alert(result.message);        
     }
   };
 

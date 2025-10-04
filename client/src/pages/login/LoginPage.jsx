@@ -22,7 +22,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-// 전체 화면 배경 (항상 100%)
+
 const Wrapper = styled.div`
   width: 100%;
   height: calc(var(--vh, 1vh) * 100);
@@ -32,7 +32,7 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-// 카드 컨테이너 (모바일은 꽉, 데스크탑은 500px 카드)
+
 const Container = styled.div`
   width: 100%;
   max-width: 500px;
@@ -188,32 +188,28 @@ export default function LoginPage() {
     setIsLoginButtonActive(email.trim() !== "" && password.trim() !== "");
   }, [email, password]);
 
-  // LoginPage.jsx
 
-// ✅ 이 함수로 기존 handleSubmit 함수를 완전히 대체하세요.
 const handleSubmit = async (e) => {
   e.preventDefault();
-  setError(""); // 이전 에러 메시지 초기화
-
-  // isLoginButtonActive 체크는 그대로 두어도 좋습니다. (엔터 키 입력 방어)
+  setError(""); 
+  
   if (!isLoginButtonActive) {
     return;
   }
 
   try {
-    // 1. 백엔드에 로그인 요청 보내기 (console.log 대신)
+    
     const result = await login({ email, password });
 
-    // 2. 결과에 따라 분기 처리
     if (result.ok) {
-      // 성공 시 퀴즈 페이지로 이동
+ 
       navigate("/quiz");
     } else {
-      // 실패 시 에러 메시지 state에 저장
+   
       setError(result.message);
     }
   } catch (err) {
-    // 네트워크 오류 등 통신 자체에 실패한 경우
+    
     setError("서버와 통신 중 문제가 발생했습니다.");
   }
 };
