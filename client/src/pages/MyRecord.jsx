@@ -5,7 +5,8 @@ import Header from '../components/Header';
 import ProfileSection from '../components/ProfileSection';
 import RecordCard from '../components/RecordCard';
 import ConfirmPopup from '../components/ConfirmPopup';
-import api from '../lib/api';
+import { getCurrentUser, getUserRecords, logout, getToken } from '../api/user';
+import { getTotalQuestions } from '../api/quiz';
 import { formatDate, formatDuration } from '../utils/dateFormat';
 
 // 프로필 이미지 import
@@ -73,33 +74,35 @@ const MyRecord = () => {
       try {
         setLoading(true);
 
-        const token = localStorage.getItem('ewhaian_token') || sessionStorage.getItem('ewhaian_token');
+        const token = getToken();
         if (!token) {
           window.location.href = '/login';
           return;
         }
 
-        const [userResponse, recordsResponse, totalResponse] = await Promise.all([
-          api.get('/api/users/me'),
-          api.get('/api/users/records'),
-          api.get('/api/quiz/total')
+        const [userResult, recordsResult, totalResult] = await Promise.all([
+          getCurrentUser(),
+          getUserRecords(),
+          getTotalQuestions()
         ]);
 
-        setUser(userResponse.data);
-        setRecords(recordsResponse.data);
-        setTotalQuestions(totalResponse.data.total);
-
-      } catch (err) {
-        console.error('데이터 로딩 실패:', err);
-
-        if (err.response?.status === 401) {
-          localStorage.removeItem('ewhaian_token');
-          sessionStorage.removeItem('ewhaian_token');
-          alert('로그인이 필요합니다. 다시 로그인해주세요.');
-          window.location.href = '/login';
+        if (!userResult.ok) {
+          if (userResult.status === 401) {
+            logout();
+            alert('로그인이 필요합니다. 다시 로그인해주세요.');
+            window.location.href = '/login';
+            return;
+          }
+          setError(userResult.message);
           return;
         }
 
+        setUser(userResult.data);
+        setRecords(recordsResult.ok ? recordsResult.data : []);
+        setTotalQuestions(totalResult.ok ? totalResult.data : 10);
+
+      } catch (err) {
+        console.error('데이터 로딩 실패:', err);
         setError('데이터를 불러오는데 실패했습니다.');
       } finally {
         setLoading(false);
@@ -114,8 +117,7 @@ const MyRecord = () => {
   };
 
   const handleLogoutConfirm = () => {
-    localStorage.removeItem('ewhaian_token');
-    sessionStorage.removeItem('ewhaian_token');
+    logout();
     window.location.href = '/login';
   };
 

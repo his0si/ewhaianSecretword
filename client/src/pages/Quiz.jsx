@@ -10,7 +10,7 @@ import ConfirmPopup from '../components/ConfirmPopup';
 import { useQuizTimer } from '../hooks/useQuizTimer';
 import { useViewportHeight } from '../hooks/useViewportHeight';
 import { formatTime, formatResultTime } from '../utils/timeFormat';
-import api from '../lib/api';
+import { getQuestions, submitQuiz } from '../api/quiz';
 
 const Container = styled.div`
   height: 100vh;
@@ -55,8 +55,13 @@ const Quiz = () => {
     setError(null);
 
     try {
-      const response = await api.get('/api/quiz/questions');
-      setQuestions(response.data);
+      const result = await getQuestions();
+      if (!result.ok) {
+        setError(result.message);
+        return;
+      }
+
+      setQuestions(result.data);
       setIsQuizStarted(true);
       setIsQuizCompleted(false);
       resetTimer();
@@ -103,27 +108,28 @@ const Quiz = () => {
 
     try {
       const answersArray = questions.map((_, index) => answers[index] || '');
+      const result = await submitQuiz({ answers: answersArray, duration: timeElapsed });
 
-      const response = await api.post('/api/quiz/submit', {
-        answers: answersArray,
-        duration: timeElapsed
-      });
+      if (!result.ok) {
+        if (result.status === 409) {
+          alert('이미 퀴즈를 제출했습니다.');
+        } else {
+          alert(result.message);
+        }
+        return;
+      }
 
       setIsQuizCompleted(true);
       setQuizResult({
-        score: response.data.score,
+        score: result.data.score,
         totalQuestions: questions.length,
         timeElapsed: formatResultTime(timeElapsed),
-        results: response.data.results || []
+        results: result.data.results || []
       });
 
     } catch (err) {
       console.error('답안 제출 실패:', err);
-      if (err.response?.status === 409) {
-        alert('이미 퀴즈를 제출했습니다.');
-      } else {
-        alert('답안 제출에 실패했습니다. 다시 시도해주세요.');
-      }
+      alert('답안 제출에 실패했습니다. 다시 시도해주세요.');
     } finally {
       setIsSubmitting(false);
     }

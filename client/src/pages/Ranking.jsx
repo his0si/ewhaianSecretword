@@ -4,7 +4,8 @@ import NavBar from '../components/NavBar';
 import Header from '../components/Header';
 import Banner from '../components/Banner';
 import RankingList from '../components/RankingList';
-import api from '../lib/api';
+import { getLeaderboard } from '../api/leaderboard';
+import { getTotalQuestions } from '../api/quiz';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -32,12 +33,18 @@ const Ranking = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [rankingsResponse, totalResponse] = await Promise.all([
-          api.get('/api/leaderboard'),
-          api.get('/api/quiz/total')
+        const [rankingsResult, totalResult] = await Promise.all([
+          getLeaderboard(),
+          getTotalQuestions()
         ]);
-        setRankings(rankingsResponse.data);
-        setTotalQuestions(totalResponse.data.total);
+
+        if (!rankingsResult.ok) {
+          setError(rankingsResult.message);
+          return;
+        }
+
+        setRankings(rankingsResult.data);
+        setTotalQuestions(totalResult.ok ? totalResult.data : 10);
       } catch (err) {
         console.error('데이터 로딩 실패:', err);
         setError('데이터를 불러오는데 실패했습니다.');
