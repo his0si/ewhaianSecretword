@@ -16,12 +16,18 @@ const StyledButton = styled.button`
     outline: none;
   }
   
-  &:hover {
+  &:hover:not(:disabled) {
     transform: scale(1.05);
   }
   
-  &:active {
+  &:active:not(:disabled) {
     transform: scale(1.02);
+  }
+  
+  &:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    transform: none;
   }
 `;
 
