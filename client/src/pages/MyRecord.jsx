@@ -4,6 +4,7 @@ import NavBar from '../components/NavBar';
 import Header from '../components/Header';
 import ProfileSection from '../components/ProfileSection';
 import RecordCard from '../components/RecordCard';
+import ConfirmPopup from '../components/ConfirmPopup';
 import api from '../lib/api';
 import { formatDate, formatDuration } from '../utils/dateFormat';
 
@@ -33,6 +34,7 @@ const RecordsSection = styled.div`
   gap: 12px;
   width: 100%;
   max-width: 327px;
+  align-items: center;
 `;
 
 const LogoutButton = styled.button`
@@ -43,6 +45,7 @@ const LogoutButton = styled.button`
   font-weight: 400;
   cursor: pointer;
   margin-top: 20px;
+  margin-bottom: 20px;
 
   &:hover {
     color: #999;
@@ -58,8 +61,10 @@ const LoadingText = styled.div`
 const MyRecord = () => {
   const [user, setUser] = useState(null);
   const [records, setRecords] = useState([]);
+  const [totalQuestions, setTotalQuestions] = useState(10);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showLogoutPopup, setShowLogoutPopup] = useState(false);
 
   const profileImages = [profile1, profile2, profile3];
 
@@ -74,11 +79,15 @@ const MyRecord = () => {
           return;
         }
 
-        const userResponse = await api.get('/api/users/me');
-        setUser(userResponse.data);
+        const [userResponse, recordsResponse, totalResponse] = await Promise.all([
+          api.get('/api/users/me'),
+          api.get('/api/users/records'),
+          api.get('/api/quiz/total')
+        ]);
 
-        const recordsResponse = await api.get('/api/users/records');
+        setUser(userResponse.data);
         setRecords(recordsResponse.data);
+        setTotalQuestions(totalResponse.data.total);
 
       } catch (err) {
         console.error('데이터 로딩 실패:', err);
@@ -100,10 +109,18 @@ const MyRecord = () => {
     fetchUserData();
   }, []);
 
-  const handleLogout = () => {
+  const handleLogoutClick = () => {
+    setShowLogoutPopup(true);
+  };
+
+  const handleLogoutConfirm = () => {
     localStorage.removeItem('ewhaian_token');
     sessionStorage.removeItem('ewhaian_token');
     window.location.href = '/login';
+  };
+
+  const handleLogoutCancel = () => {
+    setShowLogoutPopup(false);
   };
 
   const getProfileImage = (userId) => {
@@ -152,6 +169,7 @@ const MyRecord = () => {
                 challengeNumber={records.length - index}
                 date={formatDate(record.created_at)}
                 score={record.score}
+                totalQuestions={totalQuestions}
                 duration={formatDuration(record.duration)}
               />
             ))
@@ -160,11 +178,18 @@ const MyRecord = () => {
           )}
         </RecordsSection>
 
-        <LogoutButton onClick={handleLogout}>
+        <LogoutButton onClick={handleLogoutClick}>
           로그아웃
         </LogoutButton>
       </Content>
       <NavBar />
+      
+      <ConfirmPopup
+        isOpen={showLogoutPopup}
+        message="로그아웃 하시겠습니까?"
+        onConfirm={handleLogoutConfirm}
+        onCancel={handleLogoutCancel}
+      />
     </Container>
   );
 };

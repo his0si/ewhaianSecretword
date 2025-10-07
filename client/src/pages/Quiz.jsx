@@ -6,6 +6,7 @@ import QuizHeader from '../components/QuizHeader';
 import QuizMain from '../components/QuizMain';
 import QuizResult from '../components/QuizResult';
 import QuizStartScreen from '../components/QuizStartScreen';
+import ConfirmPopup from '../components/ConfirmPopup';
 import { useQuizTimer } from '../hooks/useQuizTimer';
 import { useViewportHeight } from '../hooks/useViewportHeight';
 import { formatTime, formatResultTime } from '../utils/timeFormat';
@@ -44,6 +45,7 @@ const Quiz = () => {
   const [answers, setAnswers] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [quizResult, setQuizResult] = useState(null);
+  const [showSubmitPopup, setShowSubmitPopup] = useState(false);
 
   const { timeElapsed, resetTimer } = useQuizTimer(isQuizStarted, isQuizCompleted);
   useViewportHeight();
@@ -91,37 +93,44 @@ const Quiz = () => {
     }));
   };
 
-  const handleComplete = async () => {
-    if (window.confirm('답안을 제출하시겠습니까?')) {
-      setIsSubmitting(true);
+  const handleCompleteClick = () => {
+    setShowSubmitPopup(true);
+  };
 
-      try {
-        const answersArray = questions.map((_, index) => answers[index] || '');
+  const handleSubmitConfirm = async () => {
+    setShowSubmitPopup(false);
+    setIsSubmitting(true);
 
-        const response = await api.post('/api/quiz/submit', {
-          answers: answersArray,
-          duration: timeElapsed
-        });
+    try {
+      const answersArray = questions.map((_, index) => answers[index] || '');
 
-        setIsQuizCompleted(true);
-        setQuizResult({
-          score: response.data.score,
-          totalQuestions: questions.length,
-          timeElapsed: formatResultTime(timeElapsed),
-          results: response.data.results || []
-        });
+      const response = await api.post('/api/quiz/submit', {
+        answers: answersArray,
+        duration: timeElapsed
+      });
 
-      } catch (err) {
-        console.error('답안 제출 실패:', err);
-        if (err.response?.status === 409) {
-          alert('이미 퀴즈를 제출했습니다.');
-        } else {
-          alert('답안 제출에 실패했습니다. 다시 시도해주세요.');
-        }
-      } finally {
-        setIsSubmitting(false);
+      setIsQuizCompleted(true);
+      setQuizResult({
+        score: response.data.score,
+        totalQuestions: questions.length,
+        timeElapsed: formatResultTime(timeElapsed),
+        results: response.data.results || []
+      });
+
+    } catch (err) {
+      console.error('답안 제출 실패:', err);
+      if (err.response?.status === 409) {
+        alert('이미 퀴즈를 제출했습니다.');
+      } else {
+        alert('답안 제출에 실패했습니다. 다시 시도해주세요.');
       }
+    } finally {
+      setIsSubmitting(false);
     }
+  };
+
+  const handleSubmitCancel = () => {
+    setShowSubmitPopup(false);
   };
 
   const handleEventInfo = () => {
@@ -165,10 +174,17 @@ const Quiz = () => {
           onHint={handleShowHint}
           onAnswerChange={handleAnswerChange}
           onEnter={handleNextQuestion}
-          onComplete={handleComplete}
+          onComplete={handleCompleteClick}
           isSubmitting={isSubmitting}
         />
         <NavBar />
+        
+        <ConfirmPopup
+          isOpen={showSubmitPopup}
+          message="답안을 제출하시겠습니까?"
+          onConfirm={handleSubmitConfirm}
+          onCancel={handleSubmitCancel}
+        />
       </Container>
     );
   }

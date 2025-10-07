@@ -8,7 +8,7 @@ const Card = styled.div`
   padding: 16px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
 `;
 
 const LeftSection = styled.div`
@@ -48,7 +48,7 @@ const Duration = styled.div`
   font-weight: 400;
 `;
 
-const RecordCard = ({ challengeNumber, date, score, duration }) => {
+const RecordCard = ({ challengeNumber, date, score, totalQuestions = 10, duration }) => {
   return (
     <Card>
       <LeftSection>
@@ -56,7 +56,7 @@ const RecordCard = ({ challengeNumber, date, score, duration }) => {
         <ChallengeDate>{date}</ChallengeDate>
       </LeftSection>
       <RightSection>
-        <Score>{score}/10</Score>
+        <Score>{score}/{totalQuestions}</Score>
         <Duration>{duration}</Duration>
       </RightSection>
     </Card>
