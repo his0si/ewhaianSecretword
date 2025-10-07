@@ -198,18 +198,18 @@ const handleSubmit = async (e) => {
   }
 
   try {
-    
-    const result = await login({ email, password });
+
+    const result = await login({ email, password, remember });
 
     if (result.ok) {
- 
+
       navigate("/quiz");
     } else {
-   
+
       setError(result.message);
     }
   } catch (err) {
-    
+
     setError("서버와 통신 중 문제가 발생했습니다.");
   }
 };
