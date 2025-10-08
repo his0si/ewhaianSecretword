@@ -5,10 +5,10 @@ import trueIcon from '../assets/true.svg';
 import falseIcon from '../assets/false.svg';
 
 const ResultContainer = styled.div`
-  height: 100vh;
-  height: calc(var(--vh, 1vh) * 100);
+  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
   padding-top: 52px;
-  padding-bottom: 56px;
+  padding-bottom: 80px;
   background-color: #EFF4F2;
   box-sizing: border-box;
   overflow-y: auto;
@@ -68,9 +68,10 @@ const ResultsCard = styled.div`
   background-color: white;
   border-radius: 16px;
   padding: 24px;
-  width: 325px;
+  width: 100%;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 24px;
+  box-sizing: border-box;
 `;
 
 const ResultsGrid = styled.div`

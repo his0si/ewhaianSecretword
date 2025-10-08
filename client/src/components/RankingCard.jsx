@@ -15,7 +15,7 @@ import profile3_S from '../assets/profile3_S.svg';
 import profile3_B from '../assets/profile3_B.svg';
 
 const CardContainer = styled.div`
-  width: 327px;
+  width: 100%;
   height: 77px;
   background-color: ${props => props.isTopThree ? '#ffffff' : 'transparent'};
   border: ${props => props.isTopThree ? 'none' : '1px solid var(--ewha-green)'};
@@ -24,6 +24,7 @@ const CardContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  box-sizing: border-box;
 `;
 
 const LeftSection = styled.div`

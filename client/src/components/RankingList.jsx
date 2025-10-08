@@ -6,7 +6,6 @@ const RankingListContainer = styled.div`
   flex-direction: column;
   gap: 12px;
   width: 100%;
-  max-width: 327px;
   align-items: center;
 `;
 

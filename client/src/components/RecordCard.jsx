@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const Card = styled.div`
-  width: 327px;
+  width: 100%;
   height: 77px;
   background-color: #f8f9fa;
   border-radius: 12px;
@@ -9,6 +9,7 @@ const Card = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-sizing: border-box;
 `;
 
 const LeftSection = styled.div`
