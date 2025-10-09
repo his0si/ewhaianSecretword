@@ -10,9 +10,9 @@ import { getTotalQuestions } from '../api/quiz';
 import { formatDate, formatDuration } from '../utils/dateFormat';
 
 // 프로필 이미지 import
-import profile1 from '../assets/profile1.svg';
-import profile2 from '../assets/profile2.svg';
-import profile3 from '../assets/profile3.svg';
+import profile1 from '../assets/images/profile1.svg';
+import profile2 from '../assets/images/profile2.svg';
+import profile3 from '../assets/images/profile3.svg';
 
 const Container = styled.div`
   min-height: 100vh;

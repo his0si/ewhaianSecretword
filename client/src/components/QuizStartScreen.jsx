@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Button from './Button';
-import logo from '../assets/logo.svg';
+import logo from '../assets/images/logo.svg';
 
 const CenterSection = styled.div`
   display: flex;

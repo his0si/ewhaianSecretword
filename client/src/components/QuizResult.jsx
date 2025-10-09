@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import Button from './Button';
-import logo from '../assets/logo.svg';
-import trueIcon from '../assets/true.svg';
-import falseIcon from '../assets/false.svg';
+import logo from '../assets/images/logo.svg';
+import trueIcon from '../assets/images/true.svg';
+import falseIcon from '../assets/images/false.svg';
 
 const ResultContainer = styled.div`
   min-height: 100vh;

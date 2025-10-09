@@ -1,12 +1,12 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-import rankingIcon from '../assets/ranking.svg';
-import rankingIconGreen from '../assets/ranking_G.svg';
-import keyIcon from '../assets/key.svg';
-import keyIconGreen from '../assets/key_G.svg';
-import profileIcon from '../assets/profile.svg';
-import profileIconGreen from '../assets/profile_G.svg';
+import rankingIcon from '../assets/images/ranking.svg';
+import rankingIconGreen from '../assets/images/ranking_G.svg';
+import keyIcon from '../assets/images/key.svg';
+import keyIconGreen from '../assets/images/key_G.svg';
+import profileIcon from '../assets/images/profile.svg';
+import profileIconGreen from '../assets/images/profile_G.svg';
 
 const NavBarContainer = styled.div`
   position: fixed;

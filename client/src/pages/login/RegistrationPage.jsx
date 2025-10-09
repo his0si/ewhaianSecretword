@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import eyeOpen from "../../assets/eyeOpen.png";
-import eyeClosed from "../../assets/eyeClosed.png";
-import backArrow from "../../assets/backArrow.png";
+import eyeOpen from "../../assets/images/eyeOpen.png";
+import eyeClosed from "../../assets/images/eyeClosed.png";
+import backArrow from "../../assets/images/backArrow.png";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../api/auth";   
 

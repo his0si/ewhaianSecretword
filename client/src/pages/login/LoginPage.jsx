@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 
-import eyeOpen from "../../assets/eyeOpen.png";
-import eyeClosed from "../../assets/eyeClosed.png";
-import checkGray from "../../assets/checkGray.png";
-import checkGreen from "../../assets/checkGreen.png";
+import eyeOpen from "../../assets/images/eyeOpen.png";
+import eyeClosed from "../../assets/images/eyeClosed.png";
+import checkGray from "../../assets/images/checkGray.png";
+import checkGreen from "../../assets/images/checkGreen.png";
 
 import { login } from "../../api/auth";
 const GlobalStyle = createGlobalStyle`

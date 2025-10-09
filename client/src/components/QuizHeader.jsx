@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import logo from '../assets/logo.svg';
+import logo from '../assets/images/logo.svg';
+import neurimboFont from '../assets/fonts/neurimboGothicRegular.otf';
 
 const QuizHeaderContainer = styled.div`
   position: fixed;
@@ -60,6 +61,14 @@ const Title = styled.h1`
   margin: 0;
   margin-left: 8px;
   line-height: 1.2;
+  font-family: 'NeurimboGothic', sans-serif;
+
+  @font-face {
+    font-family: 'NeurimboGothic';
+    src: url(${neurimboFont}) format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
 `;
 
 const RightSection = styled.div`

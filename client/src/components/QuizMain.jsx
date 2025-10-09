@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import AnswerInput from './AnswerInput';
-import nextIcon from '../assets/next.svg';
+import nextIcon from '../assets/images/next.svg';
 
 const QuizContainer = styled.div`
   padding-top: 112px; /* 헤더 + 진행바 높이만큼 여백 */

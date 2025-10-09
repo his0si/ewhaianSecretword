@@ -1,18 +1,18 @@
 import styled from 'styled-components';
-import profile1 from '../assets/profile1.svg';
-import profile2 from '../assets/profile2.svg';
-import profile3 from '../assets/profile3.svg';
+import profile1 from '../assets/images/profile1.svg';
+import profile2 from '../assets/images/profile2.svg';
+import profile3 from '../assets/images/profile3.svg';
 
 // 왕관 이미지들
-import profile1_G from '../assets/profile1_G.svg';
-import profile1_S from '../assets/profile1_S.svg';
-import profile1_B from '../assets/profile1_B.svg';
-import profile2_G from '../assets/profile2_G.svg';
-import profile2_S from '../assets/profile2_S.svg';
-import profile2_B from '../assets/profile2_B.svg';
-import profile3_G from '../assets/profile3_G.svg';
-import profile3_S from '../assets/profile3_S.svg';
-import profile3_B from '../assets/profile3_B.svg';
+import profile1_G from '../assets/images/profile1_G.svg';
+import profile1_S from '../assets/images/profile1_S.svg';
+import profile1_B from '../assets/images/profile1_B.svg';
+import profile2_G from '../assets/images/profile2_G.svg';
+import profile2_S from '../assets/images/profile2_S.svg';
+import profile2_B from '../assets/images/profile2_B.svg';
+import profile3_G from '../assets/images/profile3_G.svg';
+import profile3_S from '../assets/images/profile3_S.svg';
+import profile3_B from '../assets/images/profile3_B.svg';
 
 const CardContainer = styled.div`
   width: 100%;
