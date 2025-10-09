@@ -6,6 +6,7 @@ import backArrow from "../../assets/images/backArrow.png";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../api/auth";
 import axios from "axios";
+import AlertPopup from "../../components/AlertPopup";
 
 const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/users`;
 
@@ -204,6 +205,8 @@ export default function RegisterPage() {
   const [generalError, setGeneralError] = useState("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showAlertPopup, setShowAlertPopup] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const navigate = useNavigate();
 
   // 뷰포트 높이 설정
@@ -305,12 +308,31 @@ export default function RegisterPage() {
 
     setIsSubmitting(false);
 
-    if (result.ok) {
-      alert(result.data.message || "회원가입이 완료되었습니다. 이메일을 확인하여 계정을 활성화해주세요.");
-      navigate("/");
+      if (result.ok) {
+        const serverMessage = result.data.message || "";
+        let displayMessage = "";
+
+        if (serverMessage.includes("가입 성공")) {
+          displayMessage = (
+            <>
+              <span style={{ color: 'var(--ewha-green)', fontWeight: 'bold' }}>가입 성공!</span>
+              {"\n"}이메일에 있는 인증 링크를 눌러{"\n"}계정을 활성화해주세요
+            </>
+          );
+        } else {
+          displayMessage = serverMessage;
+        }
+
+        setAlertMessage(displayMessage);
+        setShowAlertPopup(true);
     } else {
       setGeneralError(result.message);
     }
+  };
+
+  const handleAlertConfirm = () => {
+    setShowAlertPopup(false);
+    navigate("/");
   };
 
   return (
@@ -418,6 +440,12 @@ export default function RegisterPage() {
           </Form>
         </Container>
       </Wrapper>
+
+      <AlertPopup
+        isOpen={showAlertPopup}
+        message={alertMessage}
+        onConfirm={handleAlertConfirm}
+      />
     </>
   );
 }
