@@ -168,7 +168,7 @@ const MyRecord = () => {
               <RecordCard
                 key={record.id}
                 challengeNumber={records.length - index}
-                date={formatDate(record.created_at)}
+                date={formatDate(record.submitted_at)}
                 score={record.score}
                 totalQuestions={totalQuestions}
                 duration={formatDuration(record.duration)}
