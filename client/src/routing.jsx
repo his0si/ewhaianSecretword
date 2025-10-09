@@ -10,8 +10,8 @@ const AppRouter = () => {
   return (
     <Router>
       <Routes>
-        {/* 기본 경로는 퀴즈 페이지로 이동 */}
-        <Route path="/" element={<Quiz />} />
+        {/* 기본 경로는 로그인 페이지로 이동 */}
+        <Route path="/" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage/>} />
         <Route path="/register" element={<RegisterPage />} /> 
         {/* 퀴즈 페이지 */}

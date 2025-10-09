@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import Header from '../components/Header';
 import QuizHeader from '../components/QuizHeader';
@@ -36,6 +37,7 @@ const Content = styled.div`
 `;
 
 const Quiz = () => {
+  const navigate = useNavigate();
   const [isQuizStarted, setIsQuizStarted] = useState(false);
   const [isQuizCompleted, setIsQuizCompleted] = useState(false);
   const [questions, setQuestions] = useState([]);
@@ -144,7 +146,7 @@ const Quiz = () => {
   };
 
   const handleRanking = () => {
-    alert('랭킹 페이지로 이동합니다.');
+    navigate('/ranking');
   };
 
   if (isQuizCompleted && quizResult) {
