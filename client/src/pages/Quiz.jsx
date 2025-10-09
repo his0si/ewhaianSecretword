@@ -79,13 +79,13 @@ const Quiz = () => {
 
   const handlePreviousQuestion = () => {
     if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
+      setCurrentQuestionIndex(prev => prev - 1);
     }
   };
 
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setCurrentQuestionIndex(prev => prev + 1);
     }
   };
 
@@ -141,11 +141,11 @@ const Quiz = () => {
     setShowSubmitPopup(false);
   };
 
-  const handleEventInfo = () => {
+  const navigateToEventInfo = () => {
     alert('이화담 행사 정보는 준비 중입니다.');
   };
 
-  const handleRanking = () => {
+  const navigateToRanking = () => {
     navigate('/ranking');
   };
 
@@ -157,8 +157,8 @@ const Quiz = () => {
           totalQuestions={quizResult.totalQuestions}
           timeElapsed={quizResult.timeElapsed}
           results={quizResult.results}
-          onEventInfo={handleEventInfo}
-          onRanking={handleRanking}
+          onEventInfo={navigateToEventInfo}
+          onRanking={navigateToRanking}
         />
         <NavBar />
       </>

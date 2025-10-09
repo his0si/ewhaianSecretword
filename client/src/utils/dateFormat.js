@@ -1,4 +1,8 @@
-// 날짜 포맷팅
+/**
+ * 날짜 포맷팅 함수들
+ */
+
+// 날짜를 "M월 D일 HH:MM" 형식으로 변환
 export const formatDate = (dateString) => {
   const date = new Date(dateString);
   const month = date.getMonth() + 1;
@@ -9,9 +13,5 @@ export const formatDate = (dateString) => {
   return `${month}월 ${day}일 ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 };
 
-// 시간 포맷팅 (초를 MM분 SS초 형식으로)
-export const formatDuration = (seconds) => {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${mins.toString().padStart(2, '0')}분 ${secs.toString().padStart(2, '0')}초`;
-};
+// formatDuration은 timeFormat.js로 이동했으므로 재export
+export { formatDuration } from './timeFormat';

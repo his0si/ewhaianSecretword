@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Quiz from './pages/Quiz';
 import MyRecord from './pages/MyRecord';
 import Ranking from './pages/Ranking';
+import QuizResultPage from './pages/QuizResult';
 
 import LoginPage from "./pages/login/LoginPage";
 import RegisterPage from "./pages/login/RegistrationPage";
@@ -18,6 +19,8 @@ const AppRouter = () => {
         <Route path="/quiz" element={<Quiz />} />
         {/* 내 기록 페이지 */}
         <Route path="/myrecord" element={<MyRecord />} />
+        {/* 퀴즈 결과 페이지 */}
+        <Route path="/quiz-result" element={<QuizResultPage />} />
         {/* 랭킹 페이지 */}
         <Route path="/ranking" element={<Ranking />} />
       </Routes>

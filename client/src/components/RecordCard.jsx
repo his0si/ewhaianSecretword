@@ -10,6 +10,16 @@ const Card = styled.div`
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #e9ecef;
+  }
+
+  &:active {
+    background-color: #dee2e6;
+  }
 `;
 
 const LeftSection = styled.div`
@@ -49,9 +59,9 @@ const Duration = styled.div`
   font-weight: 400;
 `;
 
-const RecordCard = ({ challengeNumber, date, score, totalQuestions = 10, duration }) => {
+const RecordCard = ({ challengeNumber, date, score, totalQuestions = 10, duration, onClick }) => {
   return (
-    <Card>
+    <Card onClick={onClick}>
       <LeftSection>
         <ChallengeTitle>{challengeNumber}번째 도전</ChallengeTitle>
         <ChallengeDate>{date}</ChallengeDate>

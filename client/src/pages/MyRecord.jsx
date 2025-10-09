@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import Header from '../components/Header';
 import ProfileSection from '../components/ProfileSection';
@@ -8,11 +9,7 @@ import ConfirmPopup from '../components/ConfirmPopup';
 import { getCurrentUser, getUserRecords, logout, getToken } from '../api/user';
 import { getTotalQuestions } from '../api/quiz';
 import { formatDate, formatDuration } from '../utils/dateFormat';
-
-// 프로필 이미지 import
-import profile1 from '../assets/images/profile1.svg';
-import profile2 from '../assets/images/profile2.svg';
-import profile3 from '../assets/images/profile3.svg';
+import { getProfileImage } from '../utils/profileUtils';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -59,14 +56,13 @@ const LoadingText = styled.div`
 `;
 
 const MyRecord = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [records, setRecords] = useState([]);
   const [totalQuestions, setTotalQuestions] = useState(10);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
-
-  const profileImages = [profile1, profile2, profile3];
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -124,9 +120,30 @@ const MyRecord = () => {
     setShowLogoutPopup(false);
   };
 
-  const getProfileImage = (userId) => {
-    if (!userId) return profile1;
-    return profileImages[userId % profileImages.length];
+  const handleRecordClick = (record, index) => {
+    // answers 필드를 파싱 (백엔드에서 JSON 문자열로 저장됨)
+    let results = [];
+    try {
+      results = typeof record.answers === 'string'
+        ? JSON.parse(record.answers)
+        : record.answers || [];
+    } catch (err) {
+      console.error('answers 파싱 실패:', err);
+      results = [];
+    }
+
+    // 퀴즈 결과 페이지로 이동하면서 record 데이터 전달
+    navigate('/quiz-result', {
+      state: {
+        record: {
+          ...record,
+          challenge_number: records.length - index,
+          total_questions: totalQuestions,
+          duration_formatted: formatDuration(record.duration),
+          results // 파싱된 results 추가
+        }
+      }
+    });
   };
 
   if (loading) {
@@ -172,6 +189,7 @@ const MyRecord = () => {
                 score={record.score}
                 totalQuestions={totalQuestions}
                 duration={formatDuration(record.duration)}
+                onClick={() => handleRecordClick(record, index)}
               />
             ))
           ) : (
