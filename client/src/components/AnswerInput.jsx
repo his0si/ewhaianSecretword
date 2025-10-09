@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { forwardRef } from 'react';
 
 const AnswerContainer = styled.div`
-  margin-top: 24px;
   width: 100%;
 `;
 
@@ -37,12 +36,12 @@ const AnswerInput = styled.input`
  * @param {function} onEnter - Enter 키 입력 시 호출되는 핸들러
  * @param {string} placeholder - 플레이스홀더 텍스트
  */
-const AnswerInputComponent = ({
+const AnswerInputComponent = forwardRef(({
   value = '',
   onChange,
   onEnter,
   placeholder = "답을 입력하세요"
-}) => {
+}, ref) => {
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && onEnter) {
       onEnter();
@@ -53,6 +52,7 @@ const AnswerInputComponent = ({
     <AnswerContainer>
       <AnswerLabel>답안 입력</AnswerLabel>
       <AnswerInput
+        ref={ref}
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -62,6 +62,8 @@ const AnswerInputComponent = ({
       />
     </AnswerContainer>
   );
-};
+});
+
+AnswerInputComponent.displayName = 'AnswerInput';
 
 export default AnswerInputComponent;

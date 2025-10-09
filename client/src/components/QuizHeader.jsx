@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import logo from '../assets/images/logo.svg';
+import nextIcon from '../assets/images/next.svg';
 import neurimboFont from '../assets/fonts/neurimboGothicRegular.otf';
 
 const QuizHeaderContainer = styled.div`
@@ -96,13 +97,105 @@ const TitleContainer = styled.div`
   line-height: 1.2;
 `;
 
+const NavigationWrapper = styled.div`
+  position: absolute;
+  top: 107px;
+  left: 20px;
+  right: 20px;
+  width: calc(100% - 40px);
+`;
+
+const NavigationSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
+const QuestionCounter = styled.div`
+  color: #B0B0B0;
+  font-size: 14px;
+  font-weight: 500;
+  flex: 1;
+  text-align: center;
+
+  span {
+    color: var(--ewha-green);
+  }
+`;
+
+const ArrowButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    opacity: 0.7;
+  }
+`;
+
+const ArrowIcon = styled.img`
+  width: 24px;
+  height: 24px;
+`;
+
+const CompleteNavButton = styled.button`
+  background-color: var(--ewha-green);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  height: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  min-width: 46px;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    background-color: #4a7c59;
+  }
+
+  &:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+`;
+
 /**
  * 퀴즈 진행 중 헤더 컴포넌트
- * - 로고, 타이머, 진행바 포함
+ * - 로고, 타이머, 진행바, 네비게이션 포함
  * @param {string} timeElapsed - 경과 시간 (MM:SS 형식)
  * @param {number} progress - 진행률 (0-100)
+ * @param {number} currentQuestion - 현재 문제 번호
+ * @param {number} totalQuestions - 전체 문제 수
+ * @param {function} onPrevious - 이전 버튼 핸들러
+ * @param {function} onNext - 다음 버튼 핸들러
+ * @param {function} onComplete - 완료 버튼 핸들러
+ * @param {boolean} isSubmitting - 제출 중 여부
  */
-const QuizHeader = ({ timeElapsed = "00:00", progress = 0 }) => {
+const QuizHeader = ({
+  timeElapsed = "00:00",
+  progress = 0,
+  currentQuestion = 0,
+  totalQuestions = 10,
+  onPrevious,
+  onNext,
+  onComplete,
+  isSubmitting = false
+}) => {
   return (
     <>
       <QuizHeaderContainer>
@@ -113,17 +206,45 @@ const QuizHeader = ({ timeElapsed = "00:00", progress = 0 }) => {
             <Title>비밀번호 퀴즈</Title>
           </TitleContainer>
         </LeftSection>
-        
+
         <RightSection>
           <TimerBadge>소요시간 {timeElapsed}</TimerBadge>
         </RightSection>
       </QuizHeaderContainer>
-      
+
       <ProgressBarWrapper>
         <ProgressBarContainer>
           <ProgressBar progress={progress} />
         </ProgressBarContainer>
       </ProgressBarWrapper>
+
+      <NavigationWrapper>
+        <NavigationSection>
+          <div style={{ width: '32px' }}>
+            {currentQuestion > 0 && (
+              <ArrowButton onClick={onPrevious}>
+                <ArrowIcon src={nextIcon} alt="이전" style={{ transform: 'scaleX(-1)' }} />
+              </ArrowButton>
+            )}
+          </div>
+
+          <QuestionCounter>
+            <span>{currentQuestion + 1}</span>/{totalQuestions}
+          </QuestionCounter>
+
+          <div style={{ width: '32px', display: 'flex', justifyContent: 'flex-end' }}>
+            {currentQuestion < totalQuestions - 1 ? (
+              <ArrowButton onClick={onNext}>
+                <ArrowIcon src={nextIcon} alt="다음" />
+              </ArrowButton>
+            ) : (
+              <CompleteNavButton onClick={onComplete} disabled={isSubmitting}>
+                {isSubmitting ? '제출중' : '완료'}
+              </CompleteNavButton>
+            )}
+          </div>
+        </NavigationSection>
+      </NavigationWrapper>
     </>
   );
 };

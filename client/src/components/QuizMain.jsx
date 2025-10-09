@@ -1,107 +1,33 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import AnswerInput from './AnswerInput';
-import nextIcon from '../assets/images/next.svg';
 
 const QuizContainer = styled.div`
-  padding-top: 112px; /* 헤더 + 진행바 높이만큼 여백 */
+  position: fixed;
+  top: 152px; /* 헤더(52px) + 진행바(32px + 8px + 20px) + 네비게이션(40px) */
+  left: 0;
+  right: 0;
+  bottom: 56px; /* NavBar 높이 */
   padding: 20px;
   background-color: #EFF4F2;
-  min-height: calc(100vh - 52px);
   box-sizing: border-box;
-`;
-
-const ProgressSection = styled.div`
-  margin-bottom: 32px;
-  margin-top: 32px;
-`;
-
-const ProgressBarContainer = styled.div`
-  width: 100%;
-  height: 8px;
-  background-color: white;
-  border-radius: 4px;
-  overflow: hidden;
-  margin-bottom: 20px;
-`;
-
-const ProgressBar = styled.div`
-  height: 100%;
-  background-color: var(--ewha-green);
-  border-radius: 4px;
-  transition: width 0.3s ease;
-  width: ${props => props.progress}%;
-`;
-
-const NavigationSection = styled.div`
+  overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+  flex-direction: column;
+
+  /* 키보드가 나타날 때 스크롤 방지 */
+  &.keyboard-open {
+    overflow-y: hidden;
+  }
 `;
 
-const QuestionCounter = styled.div`
-  color: #B0B0B0;
-  font-size: 14px;
-  font-weight: 500;
+const ContentWrapper = styled.div`
   flex: 1;
-  text-align: center;
-  
-  span {
-    color: var(--ewha-green);
-  }
-`;
-
-const ArrowButton = styled.button`
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  &:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-  
-  &:hover:not(:disabled) {
-    opacity: 0.7;
-  }
-`;
-
-const ArrowIcon = styled.img`
-  width: 24px;
-  height: 24px;
-`;
-
-const CompleteNavButton = styled.button`
-  background-color: var(--ewha-green);
-  color: white;
-  border: none;
-  border-radius: 14px;
-  height: 30px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 12px;
-  min-width: 46px;
-  writing-mode: horizontal-tb;
-  text-orientation: mixed;
-  white-space: nowrap;
-  
-  &:hover:not(:disabled) {
-    background-color: #4a7c59;
-  }
-  
-  &:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-  }
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 0;
 `;
 
 const QuizCard = styled.div`
@@ -109,11 +35,14 @@ const QuizCard = styled.div`
   border-radius: 16px;
   padding: 24px;
   text-align: center;
-  height: 180px;
+  min-height: 140px;
+  height: ${props => props.$isKeyboardOpen ? 'auto' : '180px'};
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
+  transition: height 0.2s ease;
 `;
 
 const HintButton = styled.button`
@@ -133,91 +62,93 @@ const HintButton = styled.button`
 `;
 
 const QuestionText = styled.div`
-  font-size: 40px;
+  font-size: ${props => props.$isKeyboardOpen ? '28px' : '40px'};
   font-weight: bold;
   color: var(--ewha-green);
   line-height: 1.4;
-  min-height: 60px;
+  min-height: ${props => props.$isKeyboardOpen ? '40px' : '60px'};
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: font-size 0.2s ease, min-height 0.2s ease;
+`;
+
+const InputWrapper = styled.div`
+  flex-shrink: 0;
+  margin-top: 24px;
+  margin-bottom: ${props => props.$isKeyboardOpen ? '0' : '20px'};
+  transition: margin-bottom 0.2s ease;
 `;
 
 
 /**
  * 퀴즈 메인 컴포넌트
- * - 진행률 바, 네비게이션, 퀴즈 카드 포함
- * @param {number} currentQuestion - 현재 문제 번호 (0부터 시작)
- * @param {number} totalQuestions - 전체 문제 수
+ * - 퀴즈 카드와 입력창 포함
  * @param {string} questionText - 현재 문제 텍스트
  * @param {string} currentAnswer - 현재 입력된 답안
- * @param {function} onPrevious - 이전 문제로 이동
- * @param {function} onNext - 다음 문제로 이동
  * @param {function} onHint - 힌트 보기
  * @param {function} onAnswerChange - 답안 변경 핸들러
  * @param {function} onEnter - Enter 키 입력 시 호출되는 핸들러
- * @param {function} onComplete - 완료 버튼 클릭 핸들러
- * @param {boolean} isSubmitting - 제출 중인지 여부
  */
 const QuizMain = ({
-  currentQuestion = 0,
-  totalQuestions = 10,
   questionText = "문제를 불러오는 중...",
   currentAnswer = '',
-  onPrevious,
-  onNext,
   onHint,
   onAnswerChange,
-  onEnter,
-  onComplete,
-  isSubmitting = false
+  onEnter
 }) => {
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+  const inputRef = useRef(null);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      // 모바일에서 viewport 높이 변화로 키보드 감지
+      if (window.visualViewport) {
+        const viewportHeight = window.visualViewport.height;
+        const windowHeight = window.innerHeight;
+
+        // viewport가 window보다 150px 이상 작아지면 키보드가 열린 것으로 판단
+        setIsKeyboardOpen(windowHeight - viewportHeight > 150);
+      }
+    };
+
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleResize);
+      window.visualViewport.addEventListener('scroll', handleResize);
+    }
+
+    return () => {
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleResize);
+        window.visualViewport.removeEventListener('scroll', handleResize);
+      }
+    };
+  }, []);
+
   return (
-    <QuizContainer>
-      <ProgressSection>
-        <NavigationSection>
-          <div style={{ width: '32px' }}>
-            {currentQuestion > 0 && (
-              <ArrowButton onClick={onPrevious}>
-                <ArrowIcon src={nextIcon} alt="이전" style={{ transform: 'scaleX(-1)' }} />
-              </ArrowButton>
-            )}
-          </div>
+    <QuizContainer ref={containerRef} className={isKeyboardOpen ? 'keyboard-open' : ''}>
+      <ContentWrapper>
+        <QuizCard $isKeyboardOpen={isKeyboardOpen}>
+          <HintButton onClick={onHint}>
+            힌트
+          </HintButton>
 
-          <QuestionCounter>
-            <span>{currentQuestion + 1}</span>/{totalQuestions}
-          </QuestionCounter>
+          <QuestionText $isKeyboardOpen={isKeyboardOpen}>
+            {questionText}
+          </QuestionText>
+        </QuizCard>
 
-          <div style={{ width: '32px', display: 'flex', justifyContent: 'flex-end' }}>
-            {currentQuestion < totalQuestions - 1 ? (
-              <ArrowButton onClick={onNext}>
-                <ArrowIcon src={nextIcon} alt="다음" />
-              </ArrowButton>
-            ) : (
-              <CompleteNavButton onClick={onComplete} disabled={isSubmitting}>
-                {isSubmitting ? '제출중' : '완료'}
-              </CompleteNavButton>
-            )}
-          </div>
-        </NavigationSection>
-      </ProgressSection>
-
-      <QuizCard>
-        <HintButton onClick={onHint}>
-          힌트
-        </HintButton>
-
-        <QuestionText>
-          {questionText}
-        </QuestionText>
-      </QuizCard>
-      
-      <AnswerInput
-        value={currentAnswer}
-        onChange={onAnswerChange}
-        onEnter={currentQuestion === totalQuestions - 1 ? onComplete : onNext}
-        placeholder="정답 입력하기"
-      />
+        <InputWrapper $isKeyboardOpen={isKeyboardOpen}>
+          <AnswerInput
+            ref={inputRef}
+            value={currentAnswer}
+            onChange={onAnswerChange}
+            onEnter={onEnter}
+            placeholder="정답 입력하기"
+          />
+        </InputWrapper>
+      </ContentWrapper>
     </QuizContainer>
   );
 };

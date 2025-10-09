@@ -171,22 +171,22 @@ const Quiz = () => {
         <QuizHeader
           timeElapsed={formatTime(timeElapsed)}
           progress={((currentQuestionIndex + 1) / questions.length) * 100}
-        />
-        <QuizMain
           currentQuestion={currentQuestionIndex}
           totalQuestions={questions.length}
-          questionText={questions[currentQuestionIndex]?.hint || "문제를 불러오는 중..."}
-          currentAnswer={answers[currentQuestionIndex] || ''}
           onPrevious={handlePreviousQuestion}
           onNext={handleNextQuestion}
-          onHint={handleShowHint}
-          onAnswerChange={handleAnswerChange}
-          onEnter={handleNextQuestion}
           onComplete={handleCompleteClick}
           isSubmitting={isSubmitting}
         />
+        <QuizMain
+          questionText={questions[currentQuestionIndex]?.hint || "문제를 불러오는 중..."}
+          currentAnswer={answers[currentQuestionIndex] || ''}
+          onHint={handleShowHint}
+          onAnswerChange={handleAnswerChange}
+          onEnter={currentQuestionIndex === questions.length - 1 ? handleCompleteClick : handleNextQuestion}
+        />
         <NavBar />
-        
+
         <ConfirmPopup
           isOpen={showSubmitPopup}
           message="답안을 제출하시겠습니까?"
