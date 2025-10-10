@@ -18,7 +18,7 @@ const CardContainer = styled.div`
   width: 100%;
   height: 77px;
   background-color: ${props => props.isTopThree ? '#ffffff' : 'transparent'};
-  border: ${props => props.isTopThree ? 'none' : '1px solid var(--ewha-green)'};
+  border: ${props => props.isCurrentUser ? '1px solid var(--ewha-green)' : 'none'};
   border-radius: 12px;
   padding: 16px;
   display: flex;
@@ -84,7 +84,7 @@ const Duration = styled.div`
   font-weight: 400;
 `;
 
-const RankingCard = ({ rank, user, score, totalQuestions = 10, duration }) => {
+const RankingCard = ({ rank, user, score, totalQuestions = 10, duration, isCurrentUser = false }) => {
   // 프로필 이미지 배열
   const profileImages = [profile1, profile2, profile3];
   
@@ -127,7 +127,7 @@ const RankingCard = ({ rank, user, score, totalQuestions = 10, duration }) => {
   };
 
   return (
-    <CardContainer isTopThree={isTopThree}>
+    <CardContainer isTopThree={isTopThree} isCurrentUser={isCurrentUser}>
       <LeftSection>
         <ProfileImageWrapper>
           <ProfileImage

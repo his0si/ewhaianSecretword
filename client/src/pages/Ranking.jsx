@@ -6,6 +6,7 @@ import Banner from '../components/Banner';
 import RankingList from '../components/RankingList';
 import { getLeaderboard } from '../api/leaderboard';
 import { getTotalQuestions } from '../api/quiz';
+import { getCurrentUser } from '../api/user';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -27,15 +28,17 @@ const Ranking = () => {
   const [totalQuestions, setTotalQuestions] = useState(10);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentUserId, setCurrentUserId] = useState(null);
 
   // 랭킹 데이터 및 총 문제 수 가져오기
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [rankingsResult, totalResult] = await Promise.all([
+        const [rankingsResult, totalResult, userResult] = await Promise.all([
           getLeaderboard(),
-          getTotalQuestions()
+          getTotalQuestions(),
+          getCurrentUser()
         ]);
 
         if (!rankingsResult.ok) {
@@ -45,6 +48,9 @@ const Ranking = () => {
 
         setRankings(rankingsResult.data);
         setTotalQuestions(totalResult.ok ? totalResult.data : 10);
+        if (userResult.ok) {
+          setCurrentUserId(userResult.data.id);
+        }
       } catch (err) {
         console.error('데이터 로딩 실패:', err);
         setError('데이터를 불러오는데 실패했습니다.');
@@ -66,6 +72,7 @@ const Ranking = () => {
           totalQuestions={totalQuestions}
           loading={loading}
           error={error}
+          currentUserId={currentUserId}
         />
       </Content>
       <NavBar />

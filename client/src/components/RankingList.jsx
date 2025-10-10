@@ -21,7 +21,7 @@ const ErrorText = styled.div`
   text-align: center;
 `;
 
-const RankingList = ({ rankings, totalQuestions, loading, error }) => {
+const RankingList = ({ rankings, totalQuestions, loading, error, currentUserId }) => {
   if (loading) {
     return (
       <RankingListContainer>
@@ -56,6 +56,7 @@ const RankingList = ({ rankings, totalQuestions, loading, error }) => {
           score={ranking.score}
           totalQuestions={totalQuestions}
           duration={ranking.duration}
+          isCurrentUser={ranking.user?.id === currentUserId}
         />
       ))}
     </RankingListContainer>
