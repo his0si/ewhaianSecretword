@@ -5,8 +5,10 @@ import AnswerInput from './AnswerInput';
 const QuizContainer = styled.div`
   position: fixed;
   top: 152px; /* 헤더(52px) + 진행바(32px + 8px + 20px) + 네비게이션(40px) */
-  left: 0;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
   bottom: 56px; /* NavBar 높이 */
   padding: 20px;
   background-color: #EFF4F2;

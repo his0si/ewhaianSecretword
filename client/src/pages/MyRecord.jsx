@@ -19,6 +19,9 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
   padding: 20px;
   display: flex;
   flex-direction: column;

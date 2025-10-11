@@ -3,6 +3,8 @@ import Button from './Button';
 import logo from '../assets/images/logo.svg';
 
 const CenterSection = styled.div`
+  width: 100%;
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,6 +15,8 @@ const CenterSection = styled.div`
 `;
 
 const ButtonSection = styled.div`
+  width: 100%;
+  max-width: 500px;
   display: flex;
   justify-content: center;
   align-items: center;
