@@ -24,9 +24,6 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
   height: calc(100vh - 52px - 56px);
   height: calc(calc(var(--vh, 1vh) * 100) - 52px - 56px);
   padding: 20px;

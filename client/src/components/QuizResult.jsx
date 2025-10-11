@@ -15,9 +15,6 @@ const ResultContainer = styled.div`
 `;
 
 const ResultContent = styled.div`
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
   padding: 20px;
   display: flex;
   flex-direction: column;
