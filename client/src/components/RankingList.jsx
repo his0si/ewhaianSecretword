@@ -21,7 +21,7 @@ const ErrorText = styled.div`
   text-align: center;
 `;
 
-const RankingList = ({ rankings, totalQuestions, loading, error, currentUserId }) => {
+const RankingList = ({ rankings, totalQuestions, loading, error, currentUserId, userCardRef }) => {
   if (loading) {
     return (
       <RankingListContainer>
@@ -48,17 +48,21 @@ const RankingList = ({ rankings, totalQuestions, loading, error, currentUserId }
 
   return (
     <RankingListContainer>
-      {rankings.map((ranking, index) => (
-        <RankingCard
-          key={ranking.id || index}
-          rank={index + 1}
-          user={ranking.user}
-          score={ranking.score}
-          totalQuestions={totalQuestions}
-          duration={ranking.duration}
-          isCurrentUser={ranking.user?.id === currentUserId}
-        />
-      ))}
+      {rankings.map((ranking, index) => {
+        const isCurrentUser = ranking.user?.id === currentUserId;
+        return (
+          <RankingCard
+            key={ranking.id || index}
+            ref={isCurrentUser ? userCardRef : null}
+            rank={index + 1}
+            user={ranking.user}
+            score={ranking.score}
+            totalQuestions={totalQuestions}
+            duration={ranking.duration}
+            isCurrentUser={isCurrentUser}
+          />
+        );
+      })}
     </RankingListContainer>
   );
 };

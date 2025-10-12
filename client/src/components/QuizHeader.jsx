@@ -12,19 +12,34 @@ const QuizHeaderContainer = styled.div`
   height: 52px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 0 20px;
   z-index: 1000;
+`;
+
+const HeaderContent = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @media (min-width: 768px) {
+    max-width: 500px;
+  }
 `;
 
 const ProgressBarWrapper = styled.div`
   position: absolute;
   top: 52px;
-  left: 20px;
-  right: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   width: calc(100% - 40px);
   margin-top: 32px;
   margin-bottom: 20px;
+
+  @media (min-width: 768px) {
+    max-width: 460px;
+  }
 `;
 
 const ProgressBarContainer = styled.div`
@@ -100,9 +115,13 @@ const TitleContainer = styled.div`
 const NavigationWrapper = styled.div`
   position: absolute;
   top: 107px;
-  left: 20px;
-  right: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   width: calc(100% - 40px);
+
+  @media (min-width: 768px) {
+    max-width: 460px;
+  }
 `;
 
 const NavigationSection = styled.div`
@@ -199,17 +218,19 @@ const QuizHeader = ({
   return (
     <>
       <QuizHeaderContainer>
-        <LeftSection>
-          <Logo src={logo} alt="이화이언 로고" />
-          <TitleContainer>
-            <Title>이화이언</Title>
-            <Title>비밀번호 퀴즈</Title>
-          </TitleContainer>
-        </LeftSection>
+        <HeaderContent>
+          <LeftSection>
+            <Logo src={logo} alt="이화이언 로고" />
+            <TitleContainer>
+              <Title>이화이언</Title>
+              <Title>비밀번호 퀴즈</Title>
+            </TitleContainer>
+          </LeftSection>
 
-        <RightSection>
-          <TimerBadge>소요시간 {timeElapsed}</TimerBadge>
-        </RightSection>
+          <RightSection>
+            <TimerBadge>소요시간 {timeElapsed}</TimerBadge>
+          </RightSection>
+        </HeaderContent>
       </QuizHeaderContainer>
 
       <ProgressBarWrapper>

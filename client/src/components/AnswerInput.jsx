@@ -3,6 +3,7 @@ import { forwardRef } from 'react';
 
 const AnswerContainer = styled.div`
   width: 100%;
+  box-sizing: border-box;
 `;
 
 const AnswerLabel = styled.label`
@@ -19,11 +20,11 @@ const AnswerInput = styled.input`
   transition: border-color 0.2s ease;
   box-sizing: border-box;
   background-color: white;
-  
+
   &:focus {
     border-color: var(--ewha-green);
   }
-  
+
   &::placeholder {
     color: #B0B0B0;
   }

@@ -81,6 +81,11 @@ const MyRecord = () => {
   const [error, setError] = useState(null);
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
 
+  // 페이지 진입 시 스크롤 최상단으로 이동
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {

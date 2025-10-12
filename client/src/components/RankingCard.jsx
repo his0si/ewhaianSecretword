@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { forwardRef } from 'react';
 import profile1 from '../assets/images/profile1.svg';
 import profile2 from '../assets/images/profile2.svg';
 import profile3 from '../assets/images/profile3.svg';
@@ -84,7 +85,7 @@ const Duration = styled.div`
   font-weight: 400;
 `;
 
-const RankingCard = ({ rank, user, score, totalQuestions = 10, duration, isCurrentUser = false }) => {
+const RankingCard = forwardRef(({ rank, user, score, totalQuestions = 10, duration, isCurrentUser = false }, ref) => {
   // 프로필 이미지 배열
   const profileImages = [profile1, profile2, profile3];
   
@@ -127,7 +128,7 @@ const RankingCard = ({ rank, user, score, totalQuestions = 10, duration, isCurre
   };
 
   return (
-    <CardContainer isTopThree={isTopThree} isCurrentUser={isCurrentUser}>
+    <CardContainer ref={ref} isTopThree={isTopThree} isCurrentUser={isCurrentUser}>
       <LeftSection>
         <ProfileImageWrapper>
           <ProfileImage
@@ -148,6 +149,8 @@ const RankingCard = ({ rank, user, score, totalQuestions = 10, duration, isCurre
       </RightSection>
     </CardContainer>
   );
-};
+});
+
+RankingCard.displayName = 'RankingCard';
 
 export default RankingCard;

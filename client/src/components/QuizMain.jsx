@@ -15,6 +15,7 @@ const QuizContainer = styled.div`
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
+  align-items: center;
 
   /* 키보드가 나타날 때 스크롤 방지 */
   &.keyboard-open {
@@ -23,14 +24,20 @@ const QuizContainer = styled.div`
 `;
 
 const ContentWrapper = styled.div`
+  width: 100%;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   min-height: 0;
+
+  @media (min-width: 768px) {
+    max-width: 460px;
+  }
 `;
 
 const QuizCard = styled.div`
+  width: 100%;
   background-color: #C8DAD3;
   border-radius: 16px;
   padding: 24px;
@@ -43,6 +50,7 @@ const QuizCard = styled.div`
   align-items: center;
   flex-shrink: 0;
   transition: height 0.2s ease;
+  box-sizing: border-box;
 `;
 
 const HintButton = styled.button`

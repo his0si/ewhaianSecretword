@@ -8,6 +8,11 @@ const QuizResultPage = () => {
   const navigate = useNavigate();
   const record = location.state?.record;
 
+  // 페이지 진입 시 스크롤 최상단으로 이동
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // record 데이터가 없으면 내 기록 페이지로 리다이렉트
   useEffect(() => {
     if (!record) {
@@ -20,7 +25,7 @@ const QuizResultPage = () => {
   };
 
   const handleRanking = () => {
-    navigate('/ranking');
+    navigate('/ranking', { state: { scrollToUser: true } });
   };
 
   if (!record) {

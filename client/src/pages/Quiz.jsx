@@ -163,7 +163,7 @@ const Quiz = () => {
   };
 
   const navigateToRanking = () => {
-    navigate('/ranking');
+    navigate('/ranking', { state: { scrollToUser: true } });
   };
 
   if (isQuizCompleted && quizResult) {

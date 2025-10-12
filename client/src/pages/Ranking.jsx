@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import Header from '../components/Header';
 import Banner from '../components/Banner';
@@ -41,11 +42,20 @@ const Content = styled.div`
 `;
 
 const Ranking = () => {
+  const location = useLocation();
   const [rankings, setRankings] = useState([]);
   const [totalQuestions, setTotalQuestions] = useState(10);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
+  const userCardRef = useRef(null);
+
+  // 페이지 진입 시 스크롤 최상단으로 이동 (퀴즈 결과에서 온 경우 제외)
+  useEffect(() => {
+    if (!location.state?.scrollToUser) {
+      window.scrollTo(0, 0);
+    }
+  }, [location]);
 
   // 랭킹 데이터 및 총 문제 수 가져오기
   useEffect(() => {
@@ -79,6 +89,16 @@ const Ranking = () => {
     fetchData();
   }, []);
 
+  // 데이터 로딩 완료 후 사용자 카드로 스크롤 (퀴즈 결과에서 온 경우만)
+  useEffect(() => {
+    if (!loading && location.state?.scrollToUser && currentUserId && userCardRef.current) {
+      // 약간의 지연을 두고 스크롤 (렌더링 완료 대기)
+      setTimeout(() => {
+        userCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }, [loading, location.state?.scrollToUser, currentUserId]);
+
   return (
     <PageWrapper>
       <Container>
@@ -91,6 +111,7 @@ const Ranking = () => {
             loading={loading}
             error={error}
             currentUserId={currentUserId}
+            userCardRef={userCardRef}
           />
         </Content>
         <NavBar />
