@@ -12,20 +12,9 @@ const QuizHeaderContainer = styled.div`
   height: 52px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   padding: 0 20px;
   z-index: 1000;
-`;
-
-const HeaderContent = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  @media (min-width: 768px) {
-    max-width: 500px;
-  }
 `;
 
 const ProgressBarWrapper = styled.div`
@@ -218,19 +207,17 @@ const QuizHeader = ({
   return (
     <>
       <QuizHeaderContainer>
-        <HeaderContent>
-          <LeftSection>
-            <Logo src={logo} alt="이화이언 로고" />
-            <TitleContainer>
-              <Title>이화이언</Title>
-              <Title>비밀번호 퀴즈</Title>
-            </TitleContainer>
-          </LeftSection>
+        <LeftSection>
+          <Logo src={logo} alt="이화이언 로고" />
+          <TitleContainer>
+            <Title>이화이언</Title>
+            <Title>비밀번호 퀴즈</Title>
+          </TitleContainer>
+        </LeftSection>
 
-          <RightSection>
-            <TimerBadge>소요시간 {timeElapsed}</TimerBadge>
-          </RightSection>
-        </HeaderContent>
+        <RightSection>
+          <TimerBadge>소요시간 {timeElapsed}</TimerBadge>
+        </RightSection>
       </QuizHeaderContainer>
 
       <ProgressBarWrapper>
