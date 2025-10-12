@@ -42,8 +42,8 @@ const QuizCard = styled.div`
   border-radius: 16px;
   padding: 24px;
   text-align: center;
-  min-height: 140px;
-  height: ${props => props.$isKeyboardOpen ? 'auto' : '180px'};
+  min-height: 200px;
+  height: ${props => props.$isKeyboardOpen ? 'auto' : '240px'};
   display: flex;
   flex-direction: column;
   justify-content: center;
