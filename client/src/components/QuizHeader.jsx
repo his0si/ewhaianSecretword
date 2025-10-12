@@ -20,15 +20,11 @@ const QuizHeaderContainer = styled.div`
 const ProgressBarWrapper = styled.div`
   position: absolute;
   top: 52px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 20px;
+  right: 20px;
   width: calc(100% - 40px);
   margin-top: 32px;
   margin-bottom: 20px;
-
-  @media (min-width: 768px) {
-    max-width: 460px;
-  }
 `;
 
 const ProgressBarContainer = styled.div`
@@ -104,13 +100,9 @@ const TitleContainer = styled.div`
 const NavigationWrapper = styled.div`
   position: absolute;
   top: 107px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 20px;
+  right: 20px;
   width: calc(100% - 40px);
-
-  @media (min-width: 768px) {
-    max-width: 460px;
-  }
 `;
 
 const NavigationSection = styled.div`
