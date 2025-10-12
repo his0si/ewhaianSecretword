@@ -13,7 +13,20 @@ import { useViewportHeight } from '../hooks/useViewportHeight';
 import { formatTime, formatResultTime } from '../utils/timeFormat';
 import { getQuestions, submitQuiz } from '../api/quiz';
 
+const PageWrapper = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  background-color: #EFF4F2;
+  display: flex;
+  justify-content: center;
+
+  @media (min-width: 768px) {
+    align-items: flex-start;
+  }
+`;
+
 const Container = styled.div`
+  width: 100%;
   height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
   padding-top: 52px;
@@ -21,6 +34,10 @@ const Container = styled.div`
   background-color: #EFF4F2;
   box-sizing: border-box;
   overflow: hidden;
+
+  @media (min-width: 768px) {
+    max-width: 500px;
+  }
 `;
 
 const Content = styled.div`
@@ -167,48 +184,52 @@ const Quiz = () => {
 
   if (isQuizStarted) {
     return (
-      <Container>
-        <QuizHeader
-          timeElapsed={formatTime(timeElapsed)}
-          progress={((currentQuestionIndex + 1) / questions.length) * 100}
-          currentQuestion={currentQuestionIndex}
-          totalQuestions={questions.length}
-          onPrevious={handlePreviousQuestion}
-          onNext={handleNextQuestion}
-          onComplete={handleCompleteClick}
-          isSubmitting={isSubmitting}
-        />
-        <QuizMain
-          questionText={questions[currentQuestionIndex]?.hint || "문제를 불러오는 중..."}
-          currentAnswer={answers[currentQuestionIndex] || ''}
-          onHint={handleShowHint}
-          onAnswerChange={handleAnswerChange}
-          onEnter={currentQuestionIndex === questions.length - 1 ? handleCompleteClick : handleNextQuestion}
-        />
-        <NavBar />
+      <PageWrapper>
+        <Container>
+          <QuizHeader
+            timeElapsed={formatTime(timeElapsed)}
+            progress={((currentQuestionIndex + 1) / questions.length) * 100}
+            currentQuestion={currentQuestionIndex}
+            totalQuestions={questions.length}
+            onPrevious={handlePreviousQuestion}
+            onNext={handleNextQuestion}
+            onComplete={handleCompleteClick}
+            isSubmitting={isSubmitting}
+          />
+          <QuizMain
+            questionText={questions[currentQuestionIndex]?.hint || "문제를 불러오는 중..."}
+            currentAnswer={answers[currentQuestionIndex] || ''}
+            onHint={handleShowHint}
+            onAnswerChange={handleAnswerChange}
+            onEnter={currentQuestionIndex === questions.length - 1 ? handleCompleteClick : handleNextQuestion}
+          />
+          <NavBar />
 
-        <ConfirmPopup
-          isOpen={showSubmitPopup}
-          message="답안을 제출하시겠습니까?"
-          onConfirm={handleSubmitConfirm}
-          onCancel={handleSubmitCancel}
-        />
-      </Container>
+          <ConfirmPopup
+            isOpen={showSubmitPopup}
+            message="답안을 제출하시겠습니까?"
+            onConfirm={handleSubmitConfirm}
+            onCancel={handleSubmitCancel}
+          />
+        </Container>
+      </PageWrapper>
     );
   }
 
   return (
-    <Container>
-      <Header title="퀴즈 풀기" />
-      <Content>
-        <QuizStartScreen
-          onStart={handleStartQuiz}
-          isLoading={isLoading}
-          error={error}
-        />
-      </Content>
-      <NavBar />
-    </Container>
+    <PageWrapper>
+      <Container>
+        <Header title="퀴즈 풀기" />
+        <Content>
+          <QuizStartScreen
+            onStart={handleStartQuiz}
+            isLoading={isLoading}
+            error={error}
+          />
+        </Content>
+        <NavBar />
+      </Container>
+    </PageWrapper>
   );
 };
 

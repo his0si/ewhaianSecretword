@@ -11,11 +11,28 @@ import { getTotalQuestions } from '../api/quiz';
 import { formatDate, formatDuration } from '../utils/dateFormat';
 import { getProfileImage } from '../utils/profileUtils';
 
+const PageWrapper = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  background-color: #EFF4F2;
+  display: flex;
+  justify-content: center;
+
+  @media (min-width: 768px) {
+    align-items: flex-start;
+  }
+`;
+
 const Container = styled.div`
+  width: 100%;
   min-height: 100vh;
   padding-top: 52px;
   padding-bottom: 56px;
   background-color: #EFF4F2;
+
+  @media (min-width: 768px) {
+    max-width: 500px;
+  }
 `;
 
 const Content = styled.div`
@@ -148,68 +165,74 @@ const MyRecord = () => {
 
   if (loading) {
     return (
-      <Container>
-        <Header title="내 기록" />
-        <Content>
-          <LoadingText>데이터를 불러오는 중...</LoadingText>
-        </Content>
-        <NavBar />
-      </Container>
+      <PageWrapper>
+        <Container>
+          <Header title="내 기록" />
+          <Content>
+            <LoadingText>데이터를 불러오는 중...</LoadingText>
+          </Content>
+          <NavBar />
+        </Container>
+      </PageWrapper>
     );
   }
 
   if (error) {
     return (
-      <Container>
-        <Header title="내 기록" />
-        <Content>
-          <LoadingText>{error}</LoadingText>
-        </Content>
-        <NavBar />
-      </Container>
+      <PageWrapper>
+        <Container>
+          <Header title="내 기록" />
+          <Content>
+            <LoadingText>{error}</LoadingText>
+          </Content>
+          <NavBar />
+        </Container>
+      </PageWrapper>
     );
   }
 
   return (
-    <Container>
-      <Header title="내 기록" />
-      <Content>
-        <ProfileSection
-          profileImage={getProfileImage(user?.id)}
-          userName={user?.nickname || '사용자'}
+    <PageWrapper>
+      <Container>
+        <Header title="내 기록" />
+        <Content>
+          <ProfileSection
+            profileImage={getProfileImage(user?.id)}
+            userName={user?.nickname || '사용자'}
+          />
+
+          <RecordsSection>
+            {records.length > 0 ? (
+              records.map((record, index) => (
+                <RecordCard
+                  key={record.id}
+                  challengeNumber={records.length - index}
+                  date={formatDate(record.submitted_at)}
+                  score={record.score}
+                  totalQuestions={totalQuestions}
+                  duration={formatDuration(record.duration)}
+                  onClick={() => handleRecordClick(record, index)}
+                />
+              ))
+            ) : (
+              <LoadingText>아직 퀴즈 기록이 없습니다.</LoadingText>
+            )}
+          </RecordsSection>
+
+          <LogoutButton onClick={handleLogoutClick}>
+            로그아웃
+          </LogoutButton>
+        </Content>
+        <NavBar />
+
+        <ConfirmPopup
+          isOpen={showLogoutPopup}
+          message="로그아웃 하시겠습니까?"
+          onConfirm={handleLogoutConfirm}
+          onCancel={handleLogoutCancel}
         />
-
-        <RecordsSection>
-          {records.length > 0 ? (
-            records.map((record, index) => (
-              <RecordCard
-                key={record.id}
-                challengeNumber={records.length - index}
-                date={formatDate(record.submitted_at)}
-                score={record.score}
-                totalQuestions={totalQuestions}
-                duration={formatDuration(record.duration)}
-                onClick={() => handleRecordClick(record, index)}
-              />
-            ))
-          ) : (
-            <LoadingText>아직 퀴즈 기록이 없습니다.</LoadingText>
-          )}
-        </RecordsSection>
-
-        <LogoutButton onClick={handleLogoutClick}>
-          로그아웃
-        </LogoutButton>
-      </Content>
-      <NavBar />
-      
-      <ConfirmPopup
-        isOpen={showLogoutPopup}
-        message="로그아웃 하시겠습니까?"
-        onConfirm={handleLogoutConfirm}
-        onCancel={handleLogoutCancel}
-      />
-    </Container>
+      </Container>
+    </PageWrapper>
   );
 };
 

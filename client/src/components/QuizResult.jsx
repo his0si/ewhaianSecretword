@@ -4,7 +4,20 @@ import logo from '../assets/images/logo.svg';
 import trueIcon from '../assets/images/true.svg';
 import falseIcon from '../assets/images/false.svg';
 
+const PageWrapper = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  background-color: #EFF4F2;
+  display: flex;
+  justify-content: center;
+
+  @media (min-width: 768px) {
+    align-items: flex-start;
+  }
+`;
+
 const ResultContainer = styled.div`
+  width: 100%;
   min-height: 100vh;
   min-height: calc(var(--vh, 1vh) * 100);
   padding-top: 52px;
@@ -12,6 +25,10 @@ const ResultContainer = styled.div`
   background-color: #EFF4F2;
   box-sizing: border-box;
   overflow-y: auto;
+
+  @media (min-width: 768px) {
+    max-width: 500px;
+  }
 `;
 
 const ResultContent = styled.div`
@@ -161,45 +178,47 @@ const QuizResult = ({
   };
 
   return (
-    <ResultContainer>
-      <ResultContent>
-        <LogoSection>
-          <Logo src={logo} alt="이화이언 로고" />
-          <ScoreText>{totalQuestions}문제 중 {score}문제 정답!</ScoreText>
-          <TimeText>
-            총 소요시간<span> {timeElapsed}</span>
-          </TimeText>
-        </LogoSection>
+    <PageWrapper>
+      <ResultContainer>
+        <ResultContent>
+          <LogoSection>
+            <Logo src={logo} alt="이화이언 로고" />
+            <ScoreText>{totalQuestions}문제 중 {score}문제 정답!</ScoreText>
+            <TimeText>
+              총 소요시간<span> {timeElapsed}</span>
+            </TimeText>
+          </LogoSection>
 
-        <ResultsCard>
-          <ResultsGrid>
-            {Array.from({ length: totalQuestions }, (_, index) => (
-              <QuestionItem key={index}>
-                <QuestionNumber>{index + 1}</QuestionNumber>
-                {renderResultIcon(results[index]?.isCorrect || false, index)}
-              </QuestionItem>
-            ))}
-          </ResultsGrid>
-        </ResultsCard>
+          <ResultsCard>
+            <ResultsGrid>
+              {Array.from({ length: totalQuestions }, (_, index) => (
+                <QuestionItem key={index}>
+                  <QuestionNumber>{index + 1}</QuestionNumber>
+                  {renderResultIcon(results[index]?.isCorrect || false, index)}
+                </QuestionItem>
+              ))}
+            </ResultsGrid>
+          </ResultsCard>
 
-        <InfoSection>
-          <InfoTitle>틀린 문제와 정답이 무엇인지 궁금하다면?</InfoTitle>
-          <InfoText>
-            11월 5일, 중강당에서 진행되는 이화이언 행사 '이화담'에<br />
-            방문하시면 정답 힌트를 알려드립니다 🍀
-          </InfoText>
-        </InfoSection>
+          <InfoSection>
+            <InfoTitle>틀린 문제와 정답이 무엇인지 궁금하다면?</InfoTitle>
+            <InfoText>
+              11월 5일, 중강당에서 진행되는 이화이언 행사 '이화담'에<br />
+              방문하시면 정답 힌트를 알려드립니다 🍀
+            </InfoText>
+          </InfoSection>
 
-        <ButtonSection>
-          <Button onClick={onEventInfo}>
-            이화담 자세히 알아보기
-          </Button>
-          <Button onClick={onRanking}>
-            랭킹 보기
-          </Button>
-        </ButtonSection>
-      </ResultContent>
-    </ResultContainer>
+          <ButtonSection>
+            <Button onClick={onEventInfo}>
+              이화담 자세히 알아보기
+            </Button>
+            <Button onClick={onRanking}>
+              랭킹 보기
+            </Button>
+          </ButtonSection>
+        </ResultContent>
+      </ResultContainer>
+    </PageWrapper>
   );
 };
 
