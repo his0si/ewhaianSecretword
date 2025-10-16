@@ -2,14 +2,24 @@
 
 # SSL 인증서 설정 스크립트
 
-# .env 파일에서 설정 읽기
-if [ -f .env ]; then
-    export $(cat .env | grep -v '^#' | xargs)
+# .env.prod 파일에서 설정 읽기
+if [ -f .env.prod ]; then
+    export $(cat .env.prod | grep -v '^#' | xargs)
 fi
 
 # 도메인과 이메일 설정
-DOMAIN="${DOMAIN_NAME:-도메인 주소 여기에}"
-EMAIL="${SSL_EMAIL:-admin@example.com}"
+DOMAIN="${DOMAIN_NAME}"
+EMAIL="${SSL_EMAIL}"
+
+# 필수 값 체크
+if [ -z "$DOMAIN" ] || [ -z "$EMAIL" ]; then
+    echo "❌ 오류: .env.prod 파일에 DOMAIN_NAME과 SSL_EMAIL을 설정해주세요!"
+    echo ""
+    echo "예시:"
+    echo "DOMAIN_NAME=ewhasecret.com"
+    echo "SSL_EMAIL=your-email@example.com"
+    exit 1
+fi
 
 echo "SSL 인증서 설정을 시작합니다..."
 
@@ -41,4 +51,4 @@ sudo chmod 600 ssl/*
 
 echo "SSL 인증서 설정이 완료되었습니다!"
 echo "이제 다음 명령어로 서비스를 시작하세요:"
-echo "docker-compose -f docker-compose.nginx.yml up -d"
+echo "docker compose -f docker-compose.prod.yml up -d"
