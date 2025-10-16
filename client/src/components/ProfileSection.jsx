@@ -5,6 +5,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 12px;
+  margin-bottom: 8px;
 `;
 
 const ProfileImage = styled.img`

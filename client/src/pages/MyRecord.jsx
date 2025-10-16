@@ -8,39 +8,26 @@ import RecordCard from '../components/RecordCard';
 import ConfirmPopup from '../components/ConfirmPopup';
 import { getCurrentUser, getUserRecords, logout, getToken } from '../api/user';
 import { getTotalQuestions } from '../api/quiz';
-import { formatDate, formatDuration } from '../utils/dateFormat';
-import { getProfileImage } from '../utils/profileUtils';
+import { formatDate, formatDuration, getProfileImage } from '../utils';
+import { PageWrapper, Container, Content as BaseContent, LoadingText } from '../styles/commonStyles';
 
-const PageWrapper = styled.div`
-  width: 100%;
-  min-height: 100vh;
-  background-color: #EFF4F2;
+const Content = styled(BaseContent)`
+  gap: 24px;
   display: flex;
-  justify-content: center;
-
-  @media (min-width: 768px) {
-    align-items: flex-start;
-  }
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: calc(calc(var(--vh, 1vh) * 100) - 52px - 56px);
+  padding-bottom: 40px;
 `;
 
-const Container = styled.div`
-  width: 100%;
-  min-height: 100vh;
-  padding-top: 52px;
-  padding-bottom: 56px;
-  background-color: #EFF4F2;
-
-  @media (min-width: 768px) {
-    max-width: 500px;
-  }
-`;
-
-const Content = styled.div`
-  padding: 20px;
+const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 24px;
+  width: 100%;
+  flex: 1;
 `;
 
 const RecordsSection = styled.div`
@@ -58,18 +45,11 @@ const LogoutButton = styled.button`
   font-size: 14px;
   font-weight: 400;
   cursor: pointer;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 
   &:hover {
     color: #999;
   }
-`;
-
-const LoadingText = styled.div`
-  color: #666666;
-  font-size: 16px;
-  text-align: center;
 `;
 
 const MyRecord = () => {
@@ -201,28 +181,30 @@ const MyRecord = () => {
       <Container>
         <Header title="내 기록" />
         <Content>
-          <ProfileSection
-            profileImage={getProfileImage(user?.id)}
-            userName={user?.nickname || '사용자'}
-          />
+          <ContentWrapper>
+            <ProfileSection
+              profileImage={getProfileImage(user?.id)}
+              userName={user?.nickname || '사용자'}
+            />
 
-          <RecordsSection>
-            {records.length > 0 ? (
-              records.map((record, index) => (
-                <RecordCard
-                  key={record.id}
-                  challengeNumber={records.length - index}
-                  date={formatDate(record.submitted_at)}
-                  score={record.score}
-                  totalQuestions={totalQuestions}
-                  duration={formatDuration(record.duration)}
-                  onClick={() => handleRecordClick(record, index)}
-                />
-              ))
-            ) : (
-              <LoadingText>아직 퀴즈 기록이 없습니다.</LoadingText>
-            )}
-          </RecordsSection>
+            <RecordsSection>
+              {records.length > 0 ? (
+                records.map((record, index) => (
+                  <RecordCard
+                    key={record.id}
+                    challengeNumber={records.length - index}
+                    date={formatDate(record.submitted_at)}
+                    score={record.score}
+                    totalQuestions={totalQuestions}
+                    duration={formatDuration(record.duration)}
+                    onClick={() => handleRecordClick(record, index)}
+                  />
+                ))
+              ) : (
+                <LoadingText>아직 퀴즈 기록이 없습니다.</LoadingText>
+              )}
+            </RecordsSection>
+          </ContentWrapper>
 
           <LogoutButton onClick={handleLogoutClick}>
             로그아웃

@@ -10,36 +10,19 @@ import QuizStartScreen from '../components/QuizStartScreen';
 import ConfirmPopup from '../components/ConfirmPopup';
 import { useQuizTimer } from '../hooks/useQuizTimer';
 import { useViewportHeight } from '../hooks/useViewportHeight';
-import { formatTime, formatResultTime } from '../utils/timeFormat';
+import { formatTime, formatResultTime } from '../utils';
 import { getQuestions, submitQuiz } from '../api/quiz';
+import { PageWrapper, Container as BaseContainer } from '../styles/commonStyles';
 
-const PageWrapper = styled.div`
-  width: 100%;
-  min-height: 100vh;
-  background-color: #EFF4F2;
-  display: flex;
-  justify-content: center;
-
-  @media (min-width: 768px) {
-    align-items: flex-start;
-  }
-`;
-
-const Container = styled.div`
-  width: 100%;
+// Quiz 페이지 전용 Container (overflow: hidden 필요)
+const Container = styled(BaseContainer)`
+  overflow: hidden;
   height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
-  padding-top: 52px;
-  padding-bottom: 56px;
-  background-color: #EFF4F2;
-  box-sizing: border-box;
-  overflow: hidden;
-
-  @media (min-width: 768px) {
-    max-width: 500px;
-  }
+  min-height: auto;
 `;
 
+// Quiz 페이지 전용 Content (높이 조정)
 const Content = styled.div`
   height: calc(100vh - 52px - 56px);
   height: calc(calc(var(--vh, 1vh) * 100) - 52px - 56px);
@@ -159,7 +142,7 @@ const Quiz = () => {
   };
 
   const navigateToEventInfo = () => {
-    alert('이화담 행사 정보는 준비 중입니다.');
+    window.open('https://ewhadam-padlet.com', '_blank', 'noopener,noreferrer');
   };
 
   const navigateToRanking = () => {

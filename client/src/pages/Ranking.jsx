@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import NavBar from '../components/NavBar';
@@ -8,38 +7,7 @@ import RankingList from '../components/RankingList';
 import { getLeaderboard } from '../api/leaderboard';
 import { getTotalQuestions } from '../api/quiz';
 import { getCurrentUser } from '../api/user';
-
-const PageWrapper = styled.div`
-  width: 100%;
-  min-height: 100vh;
-  background-color: #EFF4F2;
-  display: flex;
-  justify-content: center;
-
-  @media (min-width: 768px) {
-    align-items: flex-start;
-  }
-`;
-
-const Container = styled.div`
-  width: 100%;
-  min-height: 100vh;
-  padding-top: 52px;
-  padding-bottom: 56px;
-  background-color: #EFF4F2;
-
-  @media (min-width: 768px) {
-    max-width: 500px;
-  }
-`;
-
-const Content = styled.div`
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-`;
+import { PageWrapper, Container, Content } from '../styles/commonStyles';
 
 const Ranking = () => {
   const location = useLocation();

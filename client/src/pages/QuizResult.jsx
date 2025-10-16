@@ -21,7 +21,7 @@ const QuizResultPage = () => {
   }, [record, navigate]);
 
   const handleEventInfo = () => {
-    alert('이화담 행사 정보는 준비 중입니다.');
+    window.open('https://ewhadam-padlet.com', '_blank', 'noopener,noreferrer');
   };
 
   const handleRanking = () => {
