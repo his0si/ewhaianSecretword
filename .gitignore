@@ -1,0 +1,22 @@
+# 환경 변수 (민감한 정보)
+.env
+.env.local
+.env.prod
+.env.*.local
+
+# SSL 인증서 (민감한 정보)
+ssl/
+*.pem
+*.key
+*.crt
+
+# Certbot
+certbot/
+
+# Docker
+docker-compose.override.yml
+
+# 임시 파일
+*.log
+*.tmp
+.DS_Store
