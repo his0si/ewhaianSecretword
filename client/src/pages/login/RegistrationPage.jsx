@@ -8,7 +8,7 @@ import { register } from "../../api/auth";
 import axios from "axios";
 import AlertPopup from "../../components/AlertPopup";
 
-const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/users`;
+const API_URL = `${import.meta.env.VITE_API_BASE_URL}/users`;
 
 const GlobalStyle = createGlobalStyle`
   * {
