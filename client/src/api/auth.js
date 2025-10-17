@@ -1,10 +1,10 @@
-import axios from "axios";
+import api from "../lib/api";
 
-const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/users`;
+const API_URL = `/api/users`;
 
 export async function login({ email, password, remember = false }) {
   try {
-    const res = await axios.post(`${API_URL}/login`, { email, password });
+    const res = await api.post(`${API_URL}/login`, { email, password });
     if(res.data?.token){
       if(remember){
         localStorage.setItem("ewhaian_token",res.data.token);
@@ -26,7 +26,7 @@ export async function login({ email, password, remember = false }) {
 
 export async function register({ email, password, nickname, secretWord }) {
   try {
-    const res = await axios.post(`${API_URL}/register`, {
+    const res = await api.post(`${API_URL}/register`, {
       email,
       password,
       nickname,

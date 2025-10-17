@@ -53,7 +53,7 @@ const QuizCard = styled.div`
   box-sizing: border-box;
 `;
 
-const HintButton = styled.button`
+const HintBadge = styled.div`
   background-color: #4B9C80;
   color: white;
   border: none;
@@ -61,12 +61,7 @@ const HintButton = styled.button`
   border-radius: 12px;
   font-size: 14px;
   font-weight: 600;
-  cursor: pointer;
   margin-bottom: 20px;
-  
-  &:hover {
-    background-color: #3d7a66;
-  }
 `;
 
 const QuestionText = styled.div`
@@ -94,14 +89,12 @@ const InputWrapper = styled.div`
  * - 퀴즈 카드와 입력창 포함
  * @param {string} questionText - 현재 문제 텍스트
  * @param {string} currentAnswer - 현재 입력된 답안
- * @param {function} onHint - 힌트 보기
  * @param {function} onAnswerChange - 답안 변경 핸들러
  * @param {function} onEnter - Enter 키 입력 시 호출되는 핸들러
  */
 const QuizMain = ({
   questionText = "문제를 불러오는 중...",
   currentAnswer = '',
-  onHint,
   onAnswerChange,
   onEnter
 }) => {
@@ -138,9 +131,9 @@ const QuizMain = ({
     <QuizContainer ref={containerRef} className={isKeyboardOpen ? 'keyboard-open' : ''}>
       <ContentWrapper>
         <QuizCard $isKeyboardOpen={isKeyboardOpen}>
-          <HintButton onClick={onHint}>
+          <HintBadge>
             힌트
-          </HintButton>
+          </HintBadge>
 
           <QuestionText $isKeyboardOpen={isKeyboardOpen}>
             {questionText}

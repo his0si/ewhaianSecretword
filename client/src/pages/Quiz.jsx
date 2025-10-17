@@ -89,10 +89,6 @@ const Quiz = () => {
     }
   };
 
-  const handleShowHint = () => {
-    alert('힌트 기능은 준비 중입니다.');
-  };
-
   const handleAnswerChange = (answer) => {
     setAnswers(prev => ({
       ...prev,
@@ -182,7 +178,6 @@ const Quiz = () => {
           <QuizMain
             questionText={questions[currentQuestionIndex]?.hint || "문제를 불러오는 중..."}
             currentAnswer={answers[currentQuestionIndex] || ''}
-            onHint={handleShowHint}
             onAnswerChange={handleAnswerChange}
             onEnter={currentQuestionIndex === questions.length - 1 ? handleCompleteClick : handleNextQuestion}
           />
