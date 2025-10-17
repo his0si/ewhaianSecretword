@@ -7,8 +7,6 @@ import QuizResultPage from './pages/QuizResult';
 
 import LoginPage from "./pages/login/LoginPage";
 import RegisterPage from "./pages/login/RegistrationPage";
-import ProtectedRoute from "./components/ProtectedRoute";
-
 const AppRouter = () => {
   return (
     <Router>
@@ -17,28 +15,14 @@ const AppRouter = () => {
         <Route path="/" element={<LoginPage />} />
         <Route path="/login" element={<LoginPage/>} />
         <Route path="/register" element={<RegisterPage />} /> 
-        
-        {/* 보호된 라우트: 로그인이 필요한 페이지 */}
-        <Route path="/quiz" element={
-          <ProtectedRoute>
-            <Quiz />
-          </ProtectedRoute>
-        } />
-        <Route path="/myrecord" element={
-          <ProtectedRoute>
-            <MyRecord />
-          </ProtectedRoute>
-        } />
-        <Route path="/quiz-result" element={
-          <ProtectedRoute>
-            <QuizResultPage />
-          </ProtectedRoute>
-        } />
-        <Route path="/ranking" element={
-          <ProtectedRoute>
-            <Ranking />
-          </ProtectedRoute>
-        } />
+        {/* 퀴즈 페이지 */}
+        <Route path="/quiz" element={<Quiz />} />
+        {/* 내 기록 페이지 */}
+        <Route path="/myrecord" element={<MyRecord />} />
+        {/* 퀴즈 결과 페이지 */}
+        <Route path="/quiz-result" element={<QuizResultPage />} />
+        {/* 랭킹 페이지 */}
+        <Route path="/ranking" element={<Ranking />} />
       </Routes>
     </Router>
   );
