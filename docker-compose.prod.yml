@@ -37,6 +37,8 @@ services:
     restart: always
     networks:
       - ewha_network
+    environment:
+      - VITE_API_BASE_URL=https://ewhasecret.com
 
 networks:
   ewha_network:
