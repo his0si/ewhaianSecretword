@@ -13,8 +13,12 @@ const AppRouter = () => {
   return (
     <Router>
       <Routes>
-        {/* 기본 경로는 퀴즈 페이지로 이동 */}
-        <Route path="/" element={<Quiz />} />
+        {/* 기본 경로는 퀴즈 페이지로 이동 (로그인 안되면 자동 리다이렉트) */}
+        <Route path="/" element={
+          <ProtectedRoute>
+            <Quiz />
+          </ProtectedRoute>
+        } />
         <Route path="/login" element={<LoginPage/>} />
         <Route path="/register" element={<RegisterPage />} /> 
         
