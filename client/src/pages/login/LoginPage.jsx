@@ -6,9 +6,17 @@ import eyeOpen from "../../assets/images/eyeOpen.png";
 import eyeClosed from "../../assets/images/eyeClosed.png";
 import checkGray from "../../assets/images/checkGray.png";
 import checkGreen from "../../assets/images/checkGreen.png";
+import neurimboFont from "../../assets/fonts/neurimboGothicRegular.otf";
 
 import { login } from "../../api/auth";
 const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'NeurimboGothic';
+    src: url(${neurimboFont}) format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
   * {
     box-sizing: border-box;
   }
@@ -51,6 +59,7 @@ const Logo = styled.img`
 `;
 
 const Title = styled.h1`
+  font-family: 'NeurimboGothic', sans-serif;
   font-weight: 400;
   font-size: 25px;
   line-height: 32px;
@@ -145,7 +154,7 @@ const RegisterButton = styled.button`
   height: 50px;
   border: none;
   border-radius: 25px;
-  margin-top: 10px;
+  margin-top: 5px;
   background: #d6e5df;
   color: #0c7c51;
   font-size: 16px;
