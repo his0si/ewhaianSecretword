@@ -15,6 +15,12 @@ const BannerContainer = styled.div`
   }
 `;
 
+const BannerLink = styled.a`
+  width: 100%;
+  display: block;
+  cursor: pointer;
+`;
+
 const BannerImage = styled.img`
   width: 100%;
   height: auto;
@@ -31,12 +37,18 @@ const BannerImage = styled.img`
 `;
 
 const Banner = () => {
+  const handleBannerClick = () => {
+    window.open('https://ewhadam-padlet.com/', '_blank');
+  };
+
   return (
     <BannerContainer>
-      <BannerImage 
-        src={bannerImage} 
-        alt="11월 행사 배너"
-      />
+      <BannerLink onClick={handleBannerClick}>
+        <BannerImage 
+          src={bannerImage} 
+          alt="11월 행사 배너"
+        />
+      </BannerLink>
     </BannerContainer>
   );
 };
