@@ -4,6 +4,7 @@ import bannerImage from '../assets/images/banner.png';
 const BannerContainer = styled.div`
   width: 100vw;
   margin-left: calc(-50vw + 50%);
+  margin-top: -20px;
   margin-bottom: 24px;
   display: flex;
   justify-content: center;

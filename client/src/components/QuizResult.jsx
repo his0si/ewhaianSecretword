@@ -140,6 +140,11 @@ const InfoText = styled.div`
   color: #5E5E5E;
   font-size: 13px;
   line-height: 1.6;
+`;
+
+const SmallText = styled.span`
+  color: #5E5E5E;
+  font-size: 11px;
   margin-bottom: 8px;
 `;
 
@@ -205,7 +210,7 @@ const QuizResult = ({
             <InfoText>
               이화이언 행사 '이화담'에 방문하시면<br />
               정답 힌트를 알려드립니다 🍀<br />
-              11월 5일(수) 오후 12:30~5:30, 대학원관 중강당에서 만나요!
+              <SmallText>11월 5일(수) 오후 12:30~5:30, 대학원관 중강당에서 만나요!</SmallText>
             </InfoText>
           </InfoSection>
 
