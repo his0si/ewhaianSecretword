@@ -26,6 +26,7 @@ const BannerImage = styled.img`
   height: auto;
   object-fit: contain;
   max-width: 100%;
+  display: block;
   
   @media (min-width: 768px) {
     max-width: 600px;
@@ -46,7 +47,9 @@ const Banner = () => {
       <BannerLink onClick={handleBannerClick}>
         <BannerImage 
           src={bannerImage} 
-          alt="11월 행사 배너"
+          alt=""
+          loading="eager"
+          decoding="sync"
         />
       </BannerLink>
     </BannerContainer>
