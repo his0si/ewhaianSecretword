@@ -154,7 +154,7 @@ const RegisterButton = styled.button`
   height: 50px;
   border: none;
   border-radius: 25px;
-  margin-top: 5px;
+  margin-top: 3px;
   background: #d6e5df;
   color: #0c7c51;
   font-size: 16px;
