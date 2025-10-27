@@ -232,7 +232,7 @@ const handleSubmit = async (e) => {
           <Title>
             이화이언
             <br />
-            비밀단어 퀴즈
+            비밀번호 퀴즈
           </Title>
 
           <Form onSubmit={handleSubmit}>
