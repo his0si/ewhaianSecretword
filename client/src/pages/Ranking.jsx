@@ -17,6 +17,7 @@ const Ranking = () => {
   const [error, setError] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
   const userCardRef = useRef(null);
+  const containerRef = useRef(null);
 
   // 페이지 진입 시 스크롤 최상단으로 이동 (퀴즈 결과에서 온 경우 제외)
   useEffect(() => {
@@ -62,17 +63,19 @@ const Ranking = () => {
     if (!loading && location.state?.scrollToUser && currentUserId && userCardRef.current) {
       // 약간의 지연을 두고 스크롤 (렌더링 완료 대기)
       setTimeout(() => {
-        const headerHeight = 52; // 고정 헤더 높이
-        const extraGap = 8; // 헤더와 카드 사이 여백
-        const targetY = userCardRef.current.getBoundingClientRect().top + window.scrollY - headerHeight - extraGap;
-        window.scrollTo({ top: Math.max(targetY, 0), behavior: 'smooth' });
+        const extraGap = 8; // 카드 상단 여백
+        const container = containerRef.current;
+        if (container) {
+          const targetTopInContainer = userCardRef.current.offsetTop - extraGap;
+          container.scrollTo({ top: Math.max(targetTopInContainer, 0), behavior: 'smooth' });
+        }
       }, 100);
     }
   }, [loading, location.state?.scrollToUser, currentUserId]);
 
   return (
     <PageWrapper>
-      <Container>
+      <Container ref={containerRef}>
         <Header title="랭킹" />
         <Content>
           <Banner />
