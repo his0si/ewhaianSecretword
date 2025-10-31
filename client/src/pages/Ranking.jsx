@@ -62,7 +62,10 @@ const Ranking = () => {
     if (!loading && location.state?.scrollToUser && currentUserId && userCardRef.current) {
       // 약간의 지연을 두고 스크롤 (렌더링 완료 대기)
       setTimeout(() => {
-        userCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const headerHeight = 52; // 고정 헤더 높이
+        const extraGap = 8; // 헤더와 카드 사이 여백
+        const targetY = userCardRef.current.getBoundingClientRect().top + window.scrollY - headerHeight - extraGap;
+        window.scrollTo({ top: Math.max(targetY, 0), behavior: 'smooth' });
       }, 100);
     }
   }, [loading, location.state?.scrollToUser, currentUserId]);
